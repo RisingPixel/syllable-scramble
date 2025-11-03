@@ -65,7 +65,7 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
     // Validate word
     const isValid = await validateWord(trimmedInput, syllable);
     if (isValid) {
-      const score = calculateScore(trimmedInput);
+      const score = calculateScore(trimmedInput, syllable);
       setFoundWords([...foundWords, { word: trimmedInput.toUpperCase(), score }]);
       setInputValue('');
       setErrorMessage('');
