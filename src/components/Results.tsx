@@ -1,8 +1,12 @@
 import { Button } from '@/components/ui/button';
 import { generateComparisonStat } from '@/utils/validateWord';
-import { Star, Share2 } from 'lucide-react';
+import { Star, Share2, Trophy, Award } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { createChallengeUrl } from '@/utils/urlParams';
+import { cn } from '@/lib/utils';
+import Confetti from './Confetti';
+import { Achievement } from '@/types/achievements';
+import { getTierColor } from '@/utils/achievements';
 
 interface FoundWord {
   word: string;
@@ -15,12 +19,28 @@ interface ResultsProps {
   rejectedWords: string[];
   syllable: string;
   onRetry: () => void;
+  achievements?: Achievement[];
 }
 
-const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: ResultsProps) => {
+const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achievements = [] }: ResultsProps) => {
   const { toast } = useToast();
   const totalScore = words.reduce((sum, w) => sum + w.score, 0);
   const comparisonStat = generateComparisonStat(totalLetters);
+  
+  // Calculate achievement bonus
+  const achievementBonus = achievements.reduce((sum, a) => sum + a.points, 0);
+  const finalScore = totalScore + achievementBonus;
+  
+  // Score tier calculation
+  const getScoreTier = (score: number) => {
+    if (score >= 1000) return { name: 'LEGENDARY', color: 'from-yellow-400 to-orange-500', icon: '👑' };
+    if (score >= 700) return { name: 'DIAMOND', color: 'from-blue-400 to-purple-500', icon: '💎' };
+    if (score >= 500) return { name: 'GOLD', color: 'from-yellow-400 to-yellow-600', icon: '🏆' };
+    if (score >= 300) return { name: 'SILVER', color: 'from-gray-300 to-gray-400', icon: '🥈' };
+    return { name: 'BRONZE', color: 'from-orange-300 to-orange-400', icon: '🥉' };
+  };
+  
+  const tier = getScoreTier(finalScore);
   
   // Find the longest rejected word
   const longestRejected = rejectedWords.length > 0
@@ -31,7 +51,8 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: Resu
 
   const handleShare = async () => {
     const challengeUrl = createChallengeUrl(syllable);
-    const shareText = `🎮 SYLLABLE Challenge!\n\nI found ${words.length} word${words.length !== 1 ? 's' : ''} with syllable "${syllable}"!\nTotal score: ${totalScore} points\n\nCan you beat me? 👇\n${challengeUrl}`;
+    const achievementText = achievements.length > 0 ? `\n🏆 ${achievements.length} Achievements Unlocked!` : '';
+    const shareText = `🎮 SYLLABLE Challenge!\n\nI found ${words.length} word${words.length !== 1 ? 's' : ''} with syllable "${syllable}"!\n${tier.icon} ${tier.name} Rank - ${finalScore} points${achievementText}\n\nCan you beat me? 👇\n${challengeUrl}`;
     
     if (navigator.share) {
       try {
@@ -60,11 +81,27 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: Resu
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+      {/* Confetti for high scores */}
+      {finalScore >= 500 && <Confetti count={finalScore >= 1000 ? 100 : 50} />}
+      
       <div className="w-full max-w-xl space-y-6 text-center">
         {/* Header */}
         <div className="animate-fade-in">
           <h1 className="text-4xl font-bold tracking-tight mb-8">SYLLABLE</h1>
         </div>
+
+        {/* Trophy/Rank Display */}
+        {finalScore >= 300 && (
+          <div className="animate-scale-in mb-6">
+            <div className="text-8xl mb-2">{tier.icon}</div>
+            <div className={cn(
+              "text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r mb-2",
+              tier.color
+            )}>
+              {tier.name} RANK
+            </div>
+          </div>
+        )}
 
         {/* Decorative Stars */}
         <div className="flex justify-center gap-4 mb-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
@@ -94,12 +131,52 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: Resu
               with a total of <span className="text-foreground font-bold text-2xl">{totalLetters}</span> letters!
             </div>
           </div>
+          
+          {/* Score Display */}
+          <div className="bg-card border border-border rounded-xl p-4 max-w-sm mx-auto">
+            <div className="text-sm text-muted-foreground mb-1">Total Score</div>
+            <div className="text-4xl font-bold text-accent">{totalScore}</div>
+            {achievementBonus > 0 && (
+              <div className="mt-2 text-sm">
+                <span className="text-muted-foreground">+ Bonus: </span>
+                <span className="text-green-400 font-bold">{achievementBonus} pts</span>
+                <div className="text-2xl font-bold text-foreground mt-1">= {finalScore}</div>
+              </div>
+            )}
+          </div>
 
-          {/* Comparison Stat - More Prominent */}
+          {/* Comparison Stat */}
           <div className="text-lg font-semibold text-foreground max-w-md mx-auto pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             {comparisonStat}
           </div>
         </div>
+        
+        {/* Achievements Display */}
+        {achievements.length > 0 && (
+          <div className="bg-card border border-border rounded-xl p-4 max-w-md mx-auto animate-fade-in" style={{ animationDelay: '0.35s' }}>
+            <div className="flex items-center gap-2 mb-3">
+              <Trophy className="w-5 h-5 text-accent" />
+              <h3 className="text-lg font-bold">Achievements Unlocked</h3>
+            </div>
+            <div className="space-y-2">
+              {achievements.map(achievement => (
+                <div key={achievement.id} className="flex items-center justify-between text-sm bg-secondary/50 rounded-lg p-2">
+                  <div className="flex items-center gap-2">
+                    <Award className={cn(
+                      "w-4 h-4",
+                      achievement.tier === 'diamond' && "text-blue-400",
+                      achievement.tier === 'gold' && "text-yellow-400",
+                      achievement.tier === 'silver' && "text-gray-400",
+                      achievement.tier === 'bronze' && "text-orange-400"
+                    )} />
+                    <span className="font-medium">{achievement.name}</span>
+                  </div>
+                  <span className="text-accent font-bold">+{achievement.points}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
 
         {/* Fun Fact - More Subtle */}
         {rejectedWords.length > 0 && longestRejected && (

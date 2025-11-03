@@ -5,11 +5,7 @@ import Results from '@/components/Results';
 import { getSyllableFromUrl, validateSyllableParam } from '@/utils/urlParams';
 import { getRandomSyllable } from '@/utils/validateWord';
 import { useToast } from '@/hooks/use-toast';
-
-interface FoundWord {
-  word: string;
-  score: number;
-}
+import { FoundWord, Achievement } from '@/types/achievements';
 
 const Index = () => {
   const { toast } = useToast();
@@ -20,7 +16,8 @@ const Index = () => {
     totalLetters: number;
     rejectedWords: string[];
     syllable: string;
-  }>({ words: [], totalLetters: 0, rejectedWords: [], syllable: '' });
+    achievements: Achievement[];
+  }>({ words: [], totalLetters: 0, rejectedWords: [], syllable: '', achievements: [] });
 
   useEffect(() => {
     const syllableFromUrl = getSyllableFromUrl();
@@ -42,13 +39,13 @@ const Index = () => {
     setGameState('playing');
   };
 
-  const handleGameEnd = (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string) => {
-    setGameResults({ words, totalLetters, rejectedWords, syllable });
+  const handleGameEnd = (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string, achievements: Achievement[]) => {
+    setGameResults({ words, totalLetters, rejectedWords, syllable, achievements });
     setGameState('results');
   };
 
   const handleRetry = () => {
-    setGameResults({ words: [], totalLetters: 0, rejectedWords: [], syllable: '' });
+    setGameResults({ words: [], totalLetters: 0, rejectedWords: [], syllable: '', achievements: [] });
     setGameState('playing');
   };
 
@@ -62,6 +59,7 @@ const Index = () => {
           totalLetters={gameResults.totalLetters}
           rejectedWords={gameResults.rejectedWords}
           syllable={gameResults.syllable}
+          achievements={gameResults.achievements}
           onRetry={handleRetry}
         />
       )}

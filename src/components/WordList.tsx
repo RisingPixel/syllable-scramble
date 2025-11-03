@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
+import { cn } from '@/lib/utils';
+import { getWordColorClass, getWordGlowClass } from '@/utils/scoreCalculator';
 
 interface FoundWord {
   word: string;
   score: number;
+  comboMultiplier?: number;
 }
 
 interface WordListProps {
@@ -60,12 +63,24 @@ const WordList = ({ words, syllable }: WordListProps) => {
               key={`${item.word}-${index}`}
               className="flex justify-between items-center text-lg animate-slide-up"
             >
-              <span className="uppercase font-medium">
+              <span className={cn(
+                "uppercase font-medium transition-all",
+                getWordColorClass(item.word),
+                getWordGlowClass(item.word)
+              )}>
                 {highlightSyllable(item.word)}
               </span>
               {showScore === item.word && (
-                <span className="text-success font-bold animate-fade-in">
+                <span className={cn(
+                  "font-bold animate-fade-in px-2 py-1 rounded-md",
+                  item.score >= 100 ? "bg-gradient-to-r from-yellow-500 to-orange-500 text-white" :
+                  item.score >= 60 ? "bg-purple-500/20 text-purple-400" :
+                  "bg-green-500/20 text-green-400"
+                )}>
                   +{item.score}
+                  {item.comboMultiplier && item.comboMultiplier > 1 && (
+                    <span className="ml-1 text-xs">({item.comboMultiplier}x)</span>
+                  )}
                 </span>
               )}
             </div>

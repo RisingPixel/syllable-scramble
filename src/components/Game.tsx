@@ -3,15 +3,16 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Timer from './Timer';
 import WordList from './WordList';
-import { validateWord, calculateScore, getRandomSyllable } from '@/utils/validateWord';
-
-interface FoundWord {
-  word: string;
-  score: number;
-}
+import { validateWord, getRandomSyllable } from '@/utils/validateWord';
+import { calculateScoreWithBreakdown } from '@/utils/scoreCalculator';
+import { checkAchievements } from '@/utils/achievements';
+import ScorePopup from './ScorePopup';
+import ComboIndicator from './ComboIndicator';
+import AchievementUnlock from './AchievementUnlock';
+import { FoundWord, ComboState, GameData, ScoreBreakdown, Achievement } from '@/types/achievements';
 
 interface GameProps {
-  onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string) => void;
+  onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string, achievements: Achievement[]) => void;
   challengeSyllable?: string | null;
 }
 
@@ -22,6 +23,14 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   const [rejectedWords, setRejectedWords] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState(60);
   const [errorMessage, setErrorMessage] = useState('');
+  const [comboState, setComboState] = useState<ComboState>({
+    count: 0,
+    multiplier: 1,
+    lastSubmitTime: null
+  });
+  const [scorePopup, setScorePopup] = useState<{ breakdown: ScoreBreakdown; position: { x: number; y: number } } | null>(null);
+  const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
+  const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<number>(Date.now());
 
@@ -45,7 +54,18 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
   const handleTimeUp = () => {
     const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
-    onGameEnd(foundWords, totalLetters, rejectedWords, syllable);
+    const allAchievements = Array.from(unlockedAchievements).map(id => 
+      checkAchievements({
+        foundWords,
+        rejectedWords,
+        timeLeft,
+        syllable,
+        totalScore: foundWords.reduce((sum, w) => sum + w.score, 0),
+        comboCount: comboState.count
+      }, new Set()).find(a => a.id === id)
+    ).filter((a): a is Achievement => a !== undefined);
+    
+    onGameEnd(foundWords, totalLetters, rejectedWords, syllable, allAchievements);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -64,12 +84,78 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
     // Validate word
     const isValid = await validateWord(trimmedInput, syllable);
+    const now = Date.now();
+    const timestamp = now - startTimeRef.current;
+    
     if (isValid) {
-      const score = calculateScore(trimmedInput, syllable);
-      setFoundWords([...foundWords, { word: trimmedInput.toUpperCase(), score }]);
+      // Combo logic
+      let newCombo = { ...comboState };
+      
+      if (comboState.lastSubmitTime && now - comboState.lastSubmitTime < 5000) {
+        // Word found within 5 seconds → Combo!
+        newCombo.count++;
+        newCombo.multiplier = Math.min(1 + Math.floor(newCombo.count / 2) * 0.5, 5);
+      } else {
+        // Too much time → Reset combo
+        newCombo.count = 1;
+        newCombo.multiplier = 1;
+      }
+      
+      newCombo.lastSubmitTime = now;
+      setComboState(newCombo);
+      
+      // Calculate score with breakdown
+      const breakdown = calculateScoreWithBreakdown(trimmedInput, syllable, newCombo.multiplier);
+      
+      // Show score popup at input position
+      const inputElement = inputRef.current;
+      if (inputElement) {
+        const rect = inputElement.getBoundingClientRect();
+        setScorePopup({
+          breakdown,
+          position: { x: rect.left + rect.width / 2 - 100, y: rect.top - 150 }
+        });
+      }
+      
+      // Add word with all data
+      const newWord: FoundWord = {
+        word: trimmedInput.toUpperCase(),
+        score: breakdown.total,
+        baseScore: breakdown.base,
+        comboMultiplier: newCombo.multiplier > 1 ? newCombo.multiplier : undefined,
+        timestamp,
+        bonuses: breakdown.bonuses
+      };
+      
+      const updatedWords = [...foundWords, newWord];
+      setFoundWords(updatedWords);
+      
+      // Check for achievements
+      const gameData: GameData = {
+        foundWords: updatedWords,
+        rejectedWords,
+        timeLeft,
+        syllable,
+        totalScore: updatedWords.reduce((sum, w) => sum + w.score, 0),
+        comboCount: newCombo.count
+      };
+      
+      const newlyUnlocked = checkAchievements(gameData, unlockedAchievements);
+      if (newlyUnlocked.length > 0) {
+        setNewAchievements(newlyUnlocked);
+        setUnlockedAchievements(prev => {
+          const updated = new Set(prev);
+          newlyUnlocked.forEach(a => updated.add(a.id));
+          return updated;
+        });
+      }
+      
       setInputValue('');
       setErrorMessage('');
     } else {
+      // Error → Reset combo
+      setComboState({ count: 0, multiplier: 1, lastSubmitTime: null });
+      
       // Add to rejected words if not already there
       if (!rejectedWords.includes(trimmedInput.toUpperCase())) {
         setRejectedWords([...rejectedWords, trimmedInput.toUpperCase()]);
@@ -84,6 +170,23 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+      {/* Score Popup */}
+      {scorePopup && (
+        <ScorePopup
+          breakdown={scorePopup.breakdown}
+          position={scorePopup.position}
+          onComplete={() => setScorePopup(null)}
+        />
+      )}
+      
+      {/* Combo Indicator */}
+      <ComboIndicator comboCount={comboState.count} multiplier={comboState.multiplier} />
+      
+      {/* Achievement Unlocks */}
+      {newAchievements.map(achievement => (
+        <AchievementUnlock key={achievement.id} achievement={achievement} />
+      ))}
+      
       <div className="w-full max-w-2xl space-y-8 animate-scale-in">
         {/* Header */}
         <div className="text-center">
