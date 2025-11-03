@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
 import { ScoreBreakdown } from '@/types/achievements';
-import { cn } from '@/lib/utils';
+import CenteredPopup from './CenteredPopup';
 
 interface ScorePopupProps {
   breakdown: ScoreBreakdown;
@@ -8,29 +7,8 @@ interface ScorePopupProps {
 }
 
 const ScorePopup = ({ breakdown, onComplete }: ScorePopupProps) => {
-  // Keep onComplete stable across re-renders so the timeout isn't reset
-  const onCompleteRef = useRef(onComplete);
-  useEffect(() => {
-    onCompleteRef.current = onComplete;
-  }, [onComplete]);
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onCompleteRef.current?.();
-    }, 1500);
-    return () => clearTimeout(timer);
-  }, []);
-
   return (
-    <div
-      className="fixed z-50 pointer-events-none"
-      style={{ 
-        left: '50%', 
-        top: '20%',
-        transform: 'translateX(-50%)',
-        animation: 'fade-in 0.2s ease-out, fade-out 0.3s ease-out 1.2s forwards'
-      }}
-    >
+    <CenteredPopup duration={1500} type="success" onComplete={onComplete}>
       <div className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground rounded-xl shadow-2xl p-4 border-2 border-accent-foreground/20">
         {/* Total score - Large */}
         <div className="text-4xl font-bold text-center mb-2">
@@ -54,7 +32,7 @@ const ScorePopup = ({ breakdown, onComplete }: ScorePopupProps) => {
           </div>
         )}
       </div>
-    </div>
+    </CenteredPopup>
   );
 };
 

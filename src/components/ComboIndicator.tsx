@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import CenteredPopup from './CenteredPopup';
 
 interface ComboIndicatorProps {
   comboCount: number;
@@ -23,12 +24,7 @@ const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
   };
 
   return (
-    <div 
-      className="fixed top-4 left-1/2 -translate-x-1/2 z-40 pointer-events-none"
-      style={{ 
-        animation: 'fade-in 0.2s ease-out, fade-out 0.3s ease-out 1.7s forwards'
-      }}
-    >
+    <CenteredPopup duration={2000} type="combo" onComplete={() => {}}>
       <div
         className={cn(
           'bg-gradient-to-r text-white px-4 py-2 rounded-full shadow-lg',
@@ -38,7 +34,7 @@ const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
         <div className="text-2xl font-bold text-center">{multiplier.toFixed(1)}x</div>
         <div className="text-xs text-center font-medium">{getComboText()}</div>
       </div>
-    </div>
+    </CenteredPopup>
   );
 };
 

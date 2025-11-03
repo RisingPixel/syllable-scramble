@@ -8,6 +8,7 @@ import { getRandomSyllable } from "@/data/syllables";
 import { calculateScoreWithBreakdown } from "@/utils/scoreCalculator";
 import { checkAchievements } from "@/utils/achievements";
 import ScorePopup from "./ScorePopup";
+import CenteredPopup from "./CenteredPopup";
 import { useToast } from "@/hooks/use-toast";
 import { FoundWord, ComboState, GameData, ScoreBreakdown, Achievement } from "@/types/achievements";
 
@@ -29,13 +30,13 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
   const [rejectedWords, setRejectedWords] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState(60);
-  const [errorMessage, setErrorMessage] = useState("");
   const [comboState, setComboState] = useState<ComboState>({
     count: 0,
     multiplier: 1,
     lastSubmitTime: null,
   });
   const [scorePopup, setScorePopup] = useState<ScoreBreakdown | null>(null);
+  const [errorPopup, setErrorPopup] = useState<string | null>(null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<number>(Date.now());
@@ -87,9 +88,9 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
     // Check if word already found
     if (foundWords.some((w) => w.word.toLowerCase() === trimmedInput.toLowerCase())) {
-      setErrorMessage("Already found!");
-      setTimeout(() => setErrorMessage(""), 1500);
+      setErrorPopup("Already found!");
       setInputValue("");
+      setTimeout(() => inputRef.current?.focus(), 50);
       return;
     }
 
@@ -161,7 +162,7 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
       }
 
       setInputValue("");
-      setErrorMessage("");
+      setTimeout(() => inputRef.current?.focus(), 50);
     } else {
       // Error → Reset combo
       setComboState({ count: 0, multiplier: 1, lastSubmitTime: null });
@@ -175,12 +176,12 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
       const errorMessages = {
         too_short: "Too short!",
         missing_syllable: `Must contain "${syllable.toUpperCase()}"!`,
-        not_in_dictionary: "Word not fond!",
+        not_in_dictionary: "Word not found!",
       };
 
-      setErrorMessage(errorMessages[validation.errorType!] || "Errore!");
-      setTimeout(() => setErrorMessage(""), 1500);
+      setErrorPopup(errorMessages[validation.errorType!] || "Error!");
       setInputValue("");
+      setTimeout(() => inputRef.current?.focus(), 50);
     }
   };
 
@@ -190,6 +191,15 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
       {/* Score Popup */}
       {scorePopup && <ScorePopup breakdown={scorePopup} onComplete={() => setScorePopup(null)} />}
+      
+      {/* Error Popup */}
+      {errorPopup && (
+        <CenteredPopup duration={1500} type="error" onComplete={() => setErrorPopup(null)}>
+          <div className="bg-destructive text-white font-bold px-4 py-2 rounded-lg shadow-[0_0_0_3px_white,0_0_0_5px_rgb(239,68,68)]">
+            {errorPopup}
+          </div>
+        </CenteredPopup>
+      )}
 
       <div className="w-full max-w-2xl space-y-8 animate-scale-in">
         {/* Header */}
@@ -216,26 +226,17 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
         {/* Input Form */}
         <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="relative">
-            <Input
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Type a word..."
-              className="text-2xl py-6 px-6 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
-              autoComplete="off"
-              autoCapitalize="off"
-              spellCheck="false"
-            />
-            {errorMessage && (
-              <div className="absolute -bottom-8 left-0 right-0 text-center animate-fade-in">
-                <span className="inline-block bg-destructive text-white font-bold px-4 py-2 rounded-lg shadow-[0_0_0_3px_white,0_0_0_5px_rgb(239,68,68)]">
-                  {errorMessage}
-                </span>
-              </div>
-            )}
-          </div>
+          <Input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="Type a word..."
+            className="text-2xl py-6 px-6 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
+            autoComplete="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
           <Button
             type="submit"
             size="lg"
