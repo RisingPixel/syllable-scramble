@@ -90,19 +90,6 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
           <h1 className="text-4xl font-bold tracking-tight mb-8">SYLLABLE</h1>
         </div>
 
-        {/* Trophy/Rank Display */}
-        {finalScore >= 300 && (
-          <div className="animate-scale-in mb-6">
-            <div className="text-8xl mb-2">{tier.icon}</div>
-            <div className={cn(
-              "text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r mb-2",
-              tier.color
-            )}>
-              {tier.name} RANK
-            </div>
-          </div>
-        )}
-
         {/* Decorative Stars */}
         <div className="flex justify-center gap-4 mb-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
           <Star className="w-6 h-6 text-accent fill-accent animate-pulse" style={{ animationDelay: '0s' }} />
@@ -151,33 +138,6 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
           </div>
         </div>
         
-        {/* Achievements Display */}
-        {achievements.length > 0 && (
-          <div className="bg-card border border-border rounded-xl p-4 max-w-md mx-auto animate-fade-in" style={{ animationDelay: '0.35s' }}>
-            <div className="flex items-center gap-2 mb-3">
-              <Trophy className="w-5 h-5 text-accent" />
-              <h3 className="text-lg font-bold">Achievements Unlocked</h3>
-            </div>
-            <div className="space-y-2">
-              {achievements.map(achievement => (
-                <div key={achievement.id} className="flex items-center justify-between text-sm bg-secondary/50 rounded-lg p-2">
-                  <div className="flex items-center gap-2">
-                    <Award className={cn(
-                      "w-4 h-4",
-                      achievement.tier === 'diamond' && "text-blue-400",
-                      achievement.tier === 'gold' && "text-yellow-400",
-                      achievement.tier === 'silver' && "text-gray-400",
-                      achievement.tier === 'bronze' && "text-orange-400"
-                    )} />
-                    <span className="font-medium">{achievement.name}</span>
-                  </div>
-                  <span className="text-accent font-bold">+{achievement.points}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-
         {/* Fun Fact - More Subtle */}
         {rejectedWords.length > 0 && longestRejected && (
           <div className="pt-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
