@@ -1,15 +1,41 @@
-import dictionaryData from '../data/dictionary_en.json';
+// Load words from the open-source dictionary
+let dictionary: Set<string> | null = null;
 
-const dictionary = new Set(dictionaryData.words.map(w => w.toLowerCase()));
+const loadDictionary = async (): Promise<Set<string>> => {
+  if (dictionary) return dictionary;
+  
+  try {
+    const response = await fetch('/src/data/words_raw.txt');
+    const text = await response.text();
+    
+    const words = text
+      .split('\n')
+      .map(w => w.trim().toLowerCase())
+      .filter(w => w.length >= 2 && w.length <= 15)
+      .filter(w => /^[a-z]+$/.test(w));
+    
+    dictionary = new Set(words);
+    return dictionary;
+  } catch (error) {
+    console.error('Failed to load dictionary:', error);
+    // Fallback to empty set
+    dictionary = new Set();
+    return dictionary;
+  }
+};
 
-export const validateWord = (word: string, syllable: string): boolean => {
+// Initialize dictionary immediately
+loadDictionary();
+
+export const validateWord = async (word: string, syllable: string): Promise<boolean> => {
   const normalized = word.toLowerCase().trim();
   const syllableNorm = syllable.toLowerCase();
   
   if (normalized.length < 2) return false;
   if (!normalized.includes(syllableNorm)) return false;
   
-  return dictionary.has(normalized);
+  const dict = await loadDictionary();
+  return dict.has(normalized);
 };
 
 export const calculateScore = (word: string): number => {

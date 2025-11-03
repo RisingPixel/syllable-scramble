@@ -38,7 +38,7 @@ const Game = ({ onGameEnd }: GameProps) => {
     onGameEnd(foundWords, totalLetters);
   };
 
-  const handleSubmit = (e: FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     
     const trimmedInput = inputValue.trim();
@@ -53,7 +53,8 @@ const Game = ({ onGameEnd }: GameProps) => {
     }
 
     // Validate word
-    if (validateWord(trimmedInput, syllable)) {
+    const isValid = await validateWord(trimmedInput, syllable);
+    if (isValid) {
       const score = calculateScore(trimmedInput);
       setFoundWords([...foundWords, { word: trimmedInput.toUpperCase(), score }]);
       setInputValue('');
