@@ -1,5 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Clock, Target, Zap } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { Clock, Target, Zap } from "lucide-react";
 
 interface WelcomeProps {
   onStart: () => void;
@@ -13,9 +13,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         {/* Header */}
         <div className="text-center">
           <h1 className="text-6xl font-bold tracking-tight mb-4">SYLLABLE</h1>
-          <p className="text-xl text-muted-foreground">
-            A fast-paced word game
-          </p>
+          <p className="text-xl text-muted-foreground">A fast-paced word game</p>
           {challengeSyllable && (
             <div className="mt-4 inline-block bg-accent/20 text-accent px-4 py-2 rounded-lg font-bold animate-fade-in">
               🎯 Challenge Mode: {challengeSyllable}
@@ -26,7 +24,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         {/* Instructions Card */}
         <div className="bg-card border border-border rounded-2xl p-8 space-y-6">
           <h2 className="text-2xl font-bold text-center mb-6">How to Play</h2>
-          
+
           <div className="space-y-4">
             {/* Instruction 1 */}
             <div className="flex gap-4 items-start">
@@ -35,9 +33,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Find Words</h3>
-                <p className="text-muted-foreground">
-                  Type words that contain the given syllable anywhere in the word
-                </p>
+                <p className="text-muted-foreground">Type words that contain the given syllable anywhere in the word</p>
               </div>
             </div>
 
@@ -48,31 +44,14 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Beat the Clock</h3>
-                <p className="text-muted-foreground">
-                  You have 60 seconds to find as many words as possible
-                </p>
-              </div>
-            </div>
-
-            {/* Instruction 3 */}
-            <div className="flex gap-4 items-start">
-              <div className="bg-success/20 p-3 rounded-lg shrink-0">
-                <Zap className="w-6 h-6 text-success" />
-              </div>
-              <div>
-                <h3 className="font-semibold text-lg mb-1">Score Points</h3>
-                <p className="text-muted-foreground">
-                  Earn 10 points for each letter in your word
-                </p>
+                <p className="text-muted-foreground">You have 60 seconds to find as many words as possible</p>
               </div>
             </div>
           </div>
 
           {/* Example */}
           <div className="bg-secondary/50 border border-border rounded-xl p-4 mt-6">
-            <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider text-center">
-              Example
-            </p>
+            <p className="text-sm text-muted-foreground mb-2 uppercase tracking-wider text-center">Example</p>
             <div className="text-center space-y-2">
               <p className="text-lg">
                 If the syllable is <span className="font-bold bg-accent/30 px-2 py-1 rounded">UR</span>
