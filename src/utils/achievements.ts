@@ -139,16 +139,3 @@ export const checkAchievements = (
 
   return newlyUnlocked;
 };
-
-export const getTierColor = (tier: Achievement['tier']): string => {
-  switch (tier) {
-    case 'diamond':
-      return 'from-blue-400 to-purple-500';
-    case 'gold':
-      return 'from-yellow-400 to-yellow-600';
-    case 'silver':
-      return 'from-gray-300 to-gray-500';
-    case 'bronze':
-      return 'from-orange-300 to-orange-500';
-  }
-};

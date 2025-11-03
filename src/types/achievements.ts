@@ -44,7 +44,3 @@ export interface ComboState {
   multiplier: number;
   lastSubmitTime: number | null;
 }
-
-export interface UnlockedAchievement extends Achievement {
-  unlockedAt: number;
-}

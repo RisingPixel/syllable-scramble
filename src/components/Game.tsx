@@ -8,7 +8,7 @@ import { getRandomSyllable } from "@/data/syllables";
 import { calculateScoreWithBreakdown } from "@/utils/scoreCalculator";
 import { checkAchievements } from "@/utils/achievements";
 import ScorePopup from "./ScorePopup";
-import AchievementUnlock from "./AchievementUnlock";
+import { useToast } from "@/hooks/use-toast";
 import { FoundWord, ComboState, GameData, ScoreBreakdown, Achievement } from "@/types/achievements";
 
 interface GameProps {
@@ -23,6 +23,7 @@ interface GameProps {
 }
 
 const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
+  const { toast } = useToast();
   const [syllable] = useState(challengeSyllable || getRandomSyllable());
   const [inputValue, setInputValue] = useState("");
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
@@ -36,7 +37,6 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   });
   const [scorePopup, setScorePopup] = useState<ScoreBreakdown | null>(null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
-  const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<number>(Date.now());
 
@@ -146,7 +146,13 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
       const newlyUnlocked = checkAchievements(gameData, unlockedAchievements);
       if (newlyUnlocked.length > 0) {
-        setNewAchievements(newlyUnlocked);
+        newlyUnlocked.forEach((achievement) => {
+          toast({
+            title: `🎉 ${achievement.name}`,
+            description: `${achievement.description} (+${achievement.points} pts)`,
+            duration: 4000,
+          });
+        });
         setUnlockedAchievements((prev) => {
           const updated = new Set(prev);
           newlyUnlocked.forEach((a) => updated.add(a.id));
@@ -184,10 +190,6 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
       {/* Score Popup */}
       {scorePopup && <ScorePopup breakdown={scorePopup} onComplete={() => setScorePopup(null)} />}
-      {/* Achievement Unlocks */}
-      {newAchievements.map((achievement) => (
-        <AchievementUnlock key={achievement.id} achievement={achievement} />
-      ))}
 
       <div className="w-full max-w-2xl space-y-8 animate-scale-in">
         {/* Header */}

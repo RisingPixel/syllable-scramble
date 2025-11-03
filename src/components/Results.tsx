@@ -1,12 +1,8 @@
 import { Button } from "@/components/ui/button";
-import { generateComparisonStat } from "@/utils/validateWord";
-import { Star, Share2, Trophy, Award } from "lucide-react";
+import { Star, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
-import { createChallengeUrl } from "@/utils/urlParams";
-import { cn } from "@/lib/utils";
 import Confetti from "./Confetti";
 import { Achievement } from "@/types/achievements";
-import { getTierColor } from "@/utils/achievements";
 
 interface FoundWord {
   word: string;
@@ -25,7 +21,6 @@ interface ResultsProps {
 const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achievements = [] }: ResultsProps) => {
   const { toast } = useToast();
   const totalScore = words.reduce((sum, w) => sum + w.score, 0);
-  const comparisonStat = generateComparisonStat(totalLetters);
 
   // Calculate achievement bonus
   const achievementBonus = achievements.reduce((sum, a) => sum + a.points, 0);
@@ -49,7 +44,7 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
       : null;
 
   const handleShare = async () => {
-    const challengeUrl = createChallengeUrl(syllable);
+    const challengeUrl = `${window.location.origin}${window.location.pathname}?syl=${syllable.toUpperCase()}`;
     const achievementText = achievements.length > 0 ? `\n🏆 ${achievements.length} Achievements Unlocked!` : "";
     const shareText = `🎮 SYLLABLE Challenge!\n\nI found ${words.length} word${words.length !== 1 ? "s" : ""} with syllable "${syllable}"!\n${tier.icon} ${tier.name} Rank - ${finalScore} points${achievementText}\n\nCan you beat me? 👇\n${challengeUrl}`;
 

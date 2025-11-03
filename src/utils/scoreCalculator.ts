@@ -85,23 +85,3 @@ export const calculateScoreWithBreakdown = (
 
   return { base, bonuses, total };
 };
-
-export const getWordColorClass = (word: string): string => {
-  const length = word.length;
-
-  if (length <= 3) return 'text-muted-foreground';
-  if (length === 4) return 'text-foreground';
-  if (length === 5) return 'text-blue-400';
-  if (length === 6) return 'text-green-400';
-  if (length === 7) return 'text-purple-400';
-  if (length === 8) return 'text-orange-400';
-  if (length >= 9) return 'text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-red-400 to-pink-400';
-
-  return 'text-foreground';
-};
-
-export const getWordGlowClass = (word: string): string => {
-  if (word.length >= 9) return 'drop-shadow-[0_0_8px_rgba(251,191,36,0.5)]';
-  if (word.length >= 7) return 'drop-shadow-[0_0_4px_rgba(168,85,247,0.4)]';
-  return '';
-};

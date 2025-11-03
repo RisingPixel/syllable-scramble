@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import Welcome from '@/components/Welcome';
 import Game from '@/components/Game';
 import Results from '@/components/Results';
-import { getSyllableFromUrl, validateSyllableParam } from '@/utils/urlParams';
 import { getRandomSyllable } from '@/data/syllables';
 import { useToast } from '@/hooks/use-toast';
 import { FoundWord, Achievement } from '@/types/achievements';
@@ -20,9 +19,13 @@ const Index = () => {
   }>({ words: [], totalLetters: 0, rejectedWords: [], syllable: '', achievements: [] });
 
   useEffect(() => {
-    const syllableFromUrl = getSyllableFromUrl();
+    const params = new URLSearchParams(window.location.search);
+    const syllableFromUrl = params.get('syl');
+    
     if (syllableFromUrl) {
-      if (validateSyllableParam(syllableFromUrl)) {
+      const isValid = syllableFromUrl && syllableFromUrl.length >= 2 && syllableFromUrl.length <= 4 && /^[a-zA-Z]+$/.test(syllableFromUrl);
+      
+      if (isValid) {
         setChallengeSyllable(syllableFromUrl.toUpperCase());
       } else {
         toast({
