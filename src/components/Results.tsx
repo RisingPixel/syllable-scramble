@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { generateComparisonStat } from '@/utils/validateWord';
 import { Star, Share2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { createChallengeUrl } from '@/utils/urlParams';
 
 interface FoundWord {
   word: string;
@@ -29,12 +30,13 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: Resu
     : null;
 
   const handleShare = async () => {
-    const shareText = `I found ${words.length} word${words.length !== 1 ? 's' : ''} with ${totalLetters} letters using the syllable "${syllable}"! 🎯\n\nPlay SYLLABLE now!`;
+    const challengeUrl = createChallengeUrl(syllable);
+    const shareText = `🎮 SYLLABLE Challenge!\n\nI found ${words.length} word${words.length !== 1 ? 's' : ''} with syllable "${syllable}"!\nTotal score: ${totalScore} points\n\nCan you beat me? 👇\n${challengeUrl}`;
     
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'SYLLABLE Game Results',
+          title: 'SYLLABLE Game Challenge',
           text: shareText,
         });
       } catch (error) {

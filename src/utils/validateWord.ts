@@ -42,6 +42,11 @@ export const calculateScore = (word: string): number => {
   return word.length * 10;
 };
 
+export const isValidSyllable = (syl: string): boolean => {
+  if (!syl || syl.length < 2 || syl.length > 4) return false;
+  return /^[a-zA-Z]+$/.test(syl);
+};
+
 export const getRandomSyllable = (): string => {
   const syllables = ["UR", "POL", "ENV", "TRA", "BIO", "TECH"];
   return syllables[Math.floor(Math.random() * syllables.length)];

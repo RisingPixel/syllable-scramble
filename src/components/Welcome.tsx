@@ -3,9 +3,10 @@ import { Clock, Target, Zap } from 'lucide-react';
 
 interface WelcomeProps {
   onStart: () => void;
+  challengeSyllable?: string | null;
 }
 
-const Welcome = ({ onStart }: WelcomeProps) => {
+const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
       <div className="w-full max-w-2xl space-y-8 animate-scale-in">
@@ -15,6 +16,11 @@ const Welcome = ({ onStart }: WelcomeProps) => {
           <p className="text-xl text-muted-foreground">
             A fast-paced word game
           </p>
+          {challengeSyllable && (
+            <div className="mt-4 inline-block bg-accent/20 text-accent px-4 py-2 rounded-lg font-bold animate-fade-in">
+              🎯 Challenge Mode: {challengeSyllable}
+            </div>
+          )}
         </div>
 
         {/* Instructions Card */}

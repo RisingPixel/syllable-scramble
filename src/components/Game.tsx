@@ -12,10 +12,11 @@ interface FoundWord {
 
 interface GameProps {
   onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string) => void;
+  challengeSyllable?: string | null;
 }
 
-const Game = ({ onGameEnd }: GameProps) => {
-  const [syllable] = useState(getRandomSyllable());
+const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
+  const [syllable] = useState(challengeSyllable || getRandomSyllable());
   const [inputValue, setInputValue] = useState('');
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
   const [rejectedWords, setRejectedWords] = useState<string[]>([]);
