@@ -10,12 +10,20 @@ interface FoundWord {
 interface ResultsProps {
   words: FoundWord[];
   totalLetters: number;
+  rejectedWords: string[];
   onRetry: () => void;
 }
 
-const Results = ({ words, totalLetters, onRetry }: ResultsProps) => {
+const Results = ({ words, totalLetters, rejectedWords, onRetry }: ResultsProps) => {
   const totalScore = words.reduce((sum, w) => sum + w.score, 0);
   const comparisonStat = generateComparisonStat(totalLetters);
+  
+  // Find the longest rejected word
+  const longestRejected = rejectedWords.length > 0
+    ? rejectedWords.reduce((longest, word) => 
+        word.length > longest.length ? word : longest
+      , rejectedWords[0])
+    : null;
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
@@ -53,10 +61,10 @@ const Results = ({ words, totalLetters, onRetry }: ResultsProps) => {
         </div>
 
         {/* Fun Fact - More Subtle */}
-        {words.length > 0 && (
+        {rejectedWords.length > 0 && longestRejected && (
           <div className="pt-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
             <p className="text-xs text-muted-foreground/70 italic max-w-sm mx-auto">
-              "It's a pity that you also wrote {words.length} word{words.length !== 1 ? 's' : ''} we didn't know about... In "KONAMABMUIKER" an actual word!"
+              "It's a pity that you also wrote {rejectedWords.length} word{rejectedWords.length !== 1 ? 's' : ''} we didn't know about... Is "{longestRejected}" an actual word!?"
             </p>
           </div>
         )}

@@ -11,13 +11,14 @@ interface FoundWord {
 }
 
 interface GameProps {
-  onGameEnd: (words: FoundWord[], totalLetters: number) => void;
+  onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[]) => void;
 }
 
 const Game = ({ onGameEnd }: GameProps) => {
   const [syllable] = useState(getRandomSyllable());
   const [inputValue, setInputValue] = useState('');
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
+  const [rejectedWords, setRejectedWords] = useState<string[]>([]);
   const [timeLeft, setTimeLeft] = useState(60);
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
@@ -35,7 +36,7 @@ const Game = ({ onGameEnd }: GameProps) => {
 
   const handleTimeUp = () => {
     const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
-    onGameEnd(foundWords, totalLetters);
+    onGameEnd(foundWords, totalLetters, rejectedWords);
   };
 
   const handleSubmit = async (e: FormEvent) => {
@@ -60,6 +61,10 @@ const Game = ({ onGameEnd }: GameProps) => {
       setInputValue('');
       setErrorMessage('');
     } else {
+      // Add to rejected words if not already there
+      if (!rejectedWords.includes(trimmedInput.toUpperCase())) {
+        setRejectedWords([...rejectedWords, trimmedInput.toUpperCase()]);
+      }
       setErrorMessage('Invalid word!');
       setTimeout(() => setErrorMessage(''), 1500);
       setInputValue('');

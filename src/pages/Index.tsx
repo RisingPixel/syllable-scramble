@@ -13,19 +13,20 @@ const Index = () => {
   const [gameResults, setGameResults] = useState<{
     words: FoundWord[];
     totalLetters: number;
-  }>({ words: [], totalLetters: 0 });
+    rejectedWords: string[];
+  }>({ words: [], totalLetters: 0, rejectedWords: [] });
 
   const handleStart = () => {
     setGameState('playing');
   };
 
-  const handleGameEnd = (words: FoundWord[], totalLetters: number) => {
-    setGameResults({ words, totalLetters });
+  const handleGameEnd = (words: FoundWord[], totalLetters: number, rejectedWords: string[]) => {
+    setGameResults({ words, totalLetters, rejectedWords });
     setGameState('results');
   };
 
   const handleRetry = () => {
-    setGameResults({ words: [], totalLetters: 0 });
+    setGameResults({ words: [], totalLetters: 0, rejectedWords: [] });
     setGameState('playing');
   };
 
@@ -37,6 +38,7 @@ const Index = () => {
         <Results
           words={gameResults.words}
           totalLetters={gameResults.totalLetters}
+          rejectedWords={gameResults.rejectedWords}
           onRetry={handleRetry}
         />
       )}
