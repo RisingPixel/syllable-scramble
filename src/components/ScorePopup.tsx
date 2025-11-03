@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { ScoreBreakdown } from '@/types/achievements';
 import { cn } from '@/lib/utils';
 
@@ -9,10 +9,18 @@ interface ScorePopupProps {
 }
 
 const ScorePopup = ({ breakdown, position, onComplete }: ScorePopupProps) => {
+  // Keep onComplete stable across re-renders so the timeout isn't reset
+  const onCompleteRef = useRef(onComplete);
   useEffect(() => {
-    const timer = setTimeout(onComplete, 1500);
-    return () => clearTimeout(timer);
+    onCompleteRef.current = onComplete;
   }, [onComplete]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      onCompleteRef.current?.();
+    }, 1600);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <div
