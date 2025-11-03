@@ -1,13 +1,40 @@
-// Update this page (the content is just a fallback if you fail to update the page)
+import { useState } from 'react';
+import Game from '@/components/Game';
+import Results from '@/components/Results';
+
+interface FoundWord {
+  word: string;
+  score: number;
+}
 
 const Index = () => {
+  const [gameState, setGameState] = useState<'playing' | 'results'>('playing');
+  const [gameResults, setGameResults] = useState<{
+    words: FoundWord[];
+    totalLetters: number;
+  }>({ words: [], totalLetters: 0 });
+
+  const handleGameEnd = (words: FoundWord[], totalLetters: number) => {
+    setGameResults({ words, totalLetters });
+    setGameState('results');
+  };
+
+  const handleRetry = () => {
+    setGameResults({ words: [], totalLetters: 0 });
+    setGameState('playing');
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">Welcome to Your Blank App</h1>
-        <p className="text-xl text-muted-foreground">Start building your amazing project here!</p>
-      </div>
-    </div>
+    <>
+      {gameState === 'playing' && <Game onGameEnd={handleGameEnd} />}
+      {gameState === 'results' && (
+        <Results
+          words={gameResults.words}
+          totalLetters={gameResults.totalLetters}
+          onRetry={handleRetry}
+        />
+      )}
+    </>
   );
 };
 
