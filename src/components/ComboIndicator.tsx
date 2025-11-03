@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ComboIndicatorProps {
@@ -7,17 +6,7 @@ interface ComboIndicatorProps {
 }
 
 const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
-  const [isVisible, setIsVisible] = useState(true);
-  
-  useEffect(() => {
-    setIsVisible(true);
-    const timer = setTimeout(() => {
-      setIsVisible(false);
-    }, 2000);
-    return () => clearTimeout(timer);
-  }, [comboCount, multiplier]);
-
-  if (comboCount === 0 || !isVisible) return null;
+  if (comboCount === 0) return null;
 
   const getComboText = () => {
     if (comboCount >= 8) return '🔥 MEGA COMBO!';

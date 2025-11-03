@@ -29,7 +29,7 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
     multiplier: 1,
     lastSubmitTime: null
   });
-  const [scorePopup, setScorePopup] = useState<{ breakdown: ScoreBreakdown; position: { x: number; y: number } } | null>(null);
+  const [scorePopup, setScorePopup] = useState<ScoreBreakdown | null>(null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const [newAchievements, setNewAchievements] = useState<Achievement[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -108,15 +108,8 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
       // Calculate score with breakdown
       const breakdown = calculateScoreWithBreakdown(trimmedInput, syllable, newCombo.multiplier);
       
-      // Show score popup at input position
-      const inputElement = inputRef.current;
-      if (inputElement) {
-        const rect = inputElement.getBoundingClientRect();
-        setScorePopup({
-          breakdown,
-          position: { x: rect.left + rect.width / 2 - 100, y: rect.top - 150 }
-        });
-      }
+      // Show score popup
+      setScorePopup(breakdown);
       
       // Add word with all data
       const newWord: FoundWord = {
@@ -174,14 +167,17 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
       {/* Score Popup */}
       {scorePopup && (
         <ScorePopup
-          breakdown={scorePopup.breakdown}
-          position={scorePopup.position}
+          breakdown={scorePopup}
           onComplete={() => setScorePopup(null)}
         />
       )}
       
       {/* Combo Indicator */}
-      <ComboIndicator comboCount={comboState.count} multiplier={comboState.multiplier} />
+      <ComboIndicator 
+        key={comboState.count} 
+        comboCount={comboState.count} 
+        multiplier={comboState.multiplier} 
+      />
       
       {/* Achievement Unlocks */}
       {newAchievements.map(achievement => (

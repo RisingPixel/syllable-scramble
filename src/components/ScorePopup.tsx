@@ -4,11 +4,10 @@ import { cn } from '@/lib/utils';
 
 interface ScorePopupProps {
   breakdown: ScoreBreakdown;
-  position: { x: number; y: number };
   onComplete: () => void;
 }
 
-const ScorePopup = ({ breakdown, position, onComplete }: ScorePopupProps) => {
+const ScorePopup = ({ breakdown, onComplete }: ScorePopupProps) => {
   // Keep onComplete stable across re-renders so the timeout isn't reset
   const onCompleteRef = useRef(onComplete);
   useEffect(() => {
@@ -18,7 +17,7 @@ const ScorePopup = ({ breakdown, position, onComplete }: ScorePopupProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onCompleteRef.current?.();
-    }, 1600);
+    }, 1500);
     return () => clearTimeout(timer);
   }, []);
 
