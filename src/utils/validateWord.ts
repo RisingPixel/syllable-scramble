@@ -75,11 +75,6 @@ export const isValidSyllable = (syl: string): boolean => {
   return /^[a-zA-Z]+$/.test(syl);
 };
 
-export const getRandomSyllable = (): string => {
-  const syllables = ["UR", "POL", "ENV", "TRA", "BIO", "TECH"];
-  return syllables[Math.floor(Math.random() * syllables.length)];
-};
-
 export const generateComparisonStat = (totalLetters: number): string => {
   const comparisons = [
     { threshold: 5000, text: "That's about the length of a short novel chapter!" },
