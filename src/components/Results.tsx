@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { generateComparisonStat } from '@/utils/validateWord';
-import { Sparkles } from 'lucide-react';
+import { Sparkles, Star } from 'lucide-react';
 
 interface FoundWord {
   word: string;
@@ -19,59 +19,54 @@ const Results = ({ words, totalLetters, onRetry }: ResultsProps) => {
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
-      <div className="w-full max-w-2xl space-y-8 text-center animate-scale-in">
+      <div className="w-full max-w-xl space-y-6 text-center">
         {/* Header */}
-        <div>
-          <h1 className="text-5xl font-bold tracking-tight mb-2">SYLLABLE</h1>
+        <div className="animate-fade-in">
+          <h1 className="text-4xl font-bold tracking-tight mb-8">SYLLABLE</h1>
         </div>
 
-        {/* Success Icon */}
-        <div className="flex justify-center">
-          <div className="bg-accent/20 p-6 rounded-full animate-pulse-success">
-            <Sparkles className="w-16 h-16 text-accent" />
-          </div>
+        {/* Decorative Stars */}
+        <div className="flex justify-center gap-4 mb-4 animate-fade-in" style={{ animationDelay: '0.1s' }}>
+          <Star className="w-6 h-6 text-accent fill-accent animate-pulse" style={{ animationDelay: '0s' }} />
+          <Star className="w-8 h-8 text-accent fill-accent animate-pulse" style={{ animationDelay: '0.2s' }} />
+          <Star className="w-6 h-6 text-accent fill-accent animate-pulse" style={{ animationDelay: '0.4s' }} />
         </div>
 
-        {/* Results */}
-        <div className="space-y-6">
-          <div>
-            <div className="text-6xl font-bold mb-2">
-              You found <span className="text-accent">{words.length}</span> {words.length === 1 ? 'word' : 'words'}
+        {/* Main Results */}
+        <div className="space-y-4 animate-fade-in" style={{ animationDelay: '0.2s' }}>
+          <div className="space-y-2">
+            <div className="text-2xl text-muted-foreground">
+              You found
             </div>
-            <div className="text-3xl text-muted-foreground">
-              with a total of <span className="text-foreground font-semibold">{totalLetters}</span> letters!
+            <div className="text-6xl font-bold">
+              <span className="text-accent">{words.length}</span> {words.length === 1 ? 'word' : 'words'}
+            </div>
+            <div className="text-xl text-muted-foreground">
+              with a total of <span className="text-foreground font-bold text-2xl">{totalLetters}</span> letters!
             </div>
           </div>
 
-          <div className="text-xl text-muted-foreground max-w-lg mx-auto">
+          {/* Comparison Stat - More Prominent */}
+          <div className="text-lg font-semibold text-foreground max-w-md mx-auto pt-4 animate-fade-in" style={{ animationDelay: '0.3s' }}>
             {comparisonStat}
           </div>
-
-          <div className="bg-card border border-border rounded-xl p-6">
-            <div className="text-4xl font-bold text-accent mb-2">
-              {totalScore} points
-            </div>
-            <div className="text-sm text-muted-foreground uppercase tracking-wider">
-              Total Score
-            </div>
-          </div>
         </div>
 
-        {/* Fun Fact */}
+        {/* Fun Fact - More Subtle */}
         {words.length > 0 && (
-          <div className="bg-secondary/50 border border-border rounded-xl p-4 text-left max-w-md mx-auto">
-            <p className="text-sm text-muted-foreground italic">
+          <div className="pt-4 animate-fade-in" style={{ animationDelay: '0.4s' }}>
+            <p className="text-xs text-muted-foreground/70 italic max-w-sm mx-auto">
               "It's a pity that you also wrote {words.length} word{words.length !== 1 ? 's' : ''} we didn't know about... In "KONAMABMUIKER" an actual word!"
             </p>
           </div>
         )}
 
         {/* Action Buttons */}
-        <div className="space-y-3 pt-4">
+        <div className="space-y-3 pt-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
           <Button
             onClick={onRetry}
             size="lg"
-            className="w-full text-xl py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider"
+            className="w-full max-w-sm text-lg py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider"
           >
             Play Again
           </Button>
