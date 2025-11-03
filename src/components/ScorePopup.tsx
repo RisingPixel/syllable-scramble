@@ -10,16 +10,21 @@ interface ScorePopupProps {
 
 const ScorePopup = ({ breakdown, position, onComplete }: ScorePopupProps) => {
   useEffect(() => {
-    const timer = setTimeout(onComplete, 2500);
+    const timer = setTimeout(onComplete, 1500);
     return () => clearTimeout(timer);
   }, [onComplete]);
 
   return (
     <div
       className="fixed z-50 pointer-events-none"
-      style={{ left: position.x, top: position.y }}
+      style={{ 
+        left: '50%', 
+        top: '20%',
+        transform: 'translateX(-50%)',
+        animation: 'fade-in 0.2s ease-out, fade-out 0.3s ease-out 1.2s forwards'
+      }}
     >
-      <div className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground rounded-xl shadow-2xl p-4 animate-scale-in border-2 border-accent-foreground/20">
+      <div className="bg-gradient-to-br from-accent to-accent/80 text-accent-foreground rounded-xl shadow-2xl p-4 border-2 border-accent-foreground/20">
         {/* Total score - Large */}
         <div className="text-4xl font-bold text-center mb-2">
           +{breakdown.total}

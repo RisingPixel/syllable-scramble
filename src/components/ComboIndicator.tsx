@@ -23,16 +23,15 @@ const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
   };
 
   return (
-    <div className="fixed top-20 right-6 animate-scale-in z-40">
+    <div className="fixed top-4 left-1/2 -translate-x-1/2 animate-scale-in z-40 pointer-events-none">
       <div
         className={cn(
-          'bg-gradient-to-r text-white px-6 py-3 rounded-full shadow-lg',
+          'bg-gradient-to-r text-white px-4 py-2 rounded-full shadow-lg',
           getComboColorClass()
         )}
       >
-        <div className="text-3xl font-bold text-center">{multiplier.toFixed(1)}x</div>
-        <div className="text-sm text-center font-medium">{getComboText()}</div>
-        <div className="text-xs text-center opacity-80">{comboCount} words</div>
+        <div className="text-2xl font-bold text-center">{multiplier.toFixed(1)}x</div>
+        <div className="text-xs text-center font-medium">{getComboText()}</div>
       </div>
     </div>
   );
