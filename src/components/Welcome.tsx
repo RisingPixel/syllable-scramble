@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Clock, Target, Zap } from "lucide-react";
+import { Clock, Target } from "lucide-react";
 
 interface WelcomeProps {
   onStart: () => void;
