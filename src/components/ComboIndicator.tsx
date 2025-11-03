@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
 interface ComboIndicatorProps {
@@ -6,7 +7,17 @@ interface ComboIndicatorProps {
 }
 
 const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
-  if (comboCount === 0) return null;
+  const [isVisible, setIsVisible] = useState(true);
+  
+  useEffect(() => {
+    setIsVisible(true);
+    const timer = setTimeout(() => {
+      setIsVisible(false);
+    }, 2000);
+    return () => clearTimeout(timer);
+  }, [comboCount, multiplier]);
+
+  if (comboCount === 0 || !isVisible) return null;
 
   const getComboText = () => {
     if (comboCount >= 8) return '🔥 MEGA COMBO!';
@@ -23,7 +34,12 @@ const ComboIndicator = ({ comboCount, multiplier }: ComboIndicatorProps) => {
   };
 
   return (
-    <div className="fixed top-4 left-1/2 -translate-x-1/2 animate-scale-in z-40 pointer-events-none">
+    <div 
+      className="fixed top-4 left-1/2 -translate-x-1/2 z-40 pointer-events-none"
+      style={{ 
+        animation: 'fade-in 0.2s ease-out, fade-out 0.3s ease-out 1.7s forwards'
+      }}
+    >
       <div
         className={cn(
           'bg-gradient-to-r text-white px-4 py-2 rounded-full shadow-lg',
