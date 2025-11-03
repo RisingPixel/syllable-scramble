@@ -86,7 +86,7 @@ export const calculateScore = (word: string, syllable: string): number => {
 };
 
 export const isValidSyllable = (syl: string): boolean => {
-  if (!syl || syl.length < 2 || syl.length > 4) return false;
+  if (!syl || syl.length < 2 || syl.length > 6) return false;
   return /^[a-zA-Z]+$/.test(syl);
 };
 

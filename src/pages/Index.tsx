@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Welcome from '@/components/Welcome';
 import Game from '@/components/Game';
 import Results from '@/components/Results';
-import { getRandomSyllable } from '@/data/syllables';
+import { getRandomSyllable, isValidSyllableFormat } from '@/data/syllables';
 import { useToast } from '@/hooks/use-toast';
 import { FoundWord, Achievement } from '@/types/achievements';
 
@@ -23,7 +23,7 @@ const Index = () => {
     const syllableFromUrl = params.get('syl');
     
     if (syllableFromUrl) {
-      const isValid = syllableFromUrl && syllableFromUrl.length >= 2 && syllableFromUrl.length <= 4 && /^[a-zA-Z]+$/.test(syllableFromUrl);
+      const isValid = isValidSyllableFormat(syllableFromUrl);
       
       if (isValid) {
         setChallengeSyllable(syllableFromUrl.toUpperCase());

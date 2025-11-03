@@ -57,3 +57,18 @@ export const getRandomSyllable = (): string => {
   const syllables = ALL_SYLLABLES;
   return syllables[Math.floor(Math.random() * syllables.length)].toUpperCase();
 };
+
+/**
+ * Validate if a syllable is in the correct format
+ */
+export const isValidSyllableFormat = (syllable: string): boolean => {
+  if (!syllable) return false;
+  
+  // Min 2 chars, max 6 chars (to cover all existing syllables)
+  if (syllable.length < 2 || syllable.length > 6) return false;
+  
+  // Only letters allowed
+  if (!/^[a-zA-Z]+$/.test(syllable)) return false;
+  
+  return true;
+};
