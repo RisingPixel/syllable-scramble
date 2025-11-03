@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { generateComparisonStat } from '@/utils/validateWord';
-import { Sparkles, Star } from 'lucide-react';
+import { Star, Share2 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface FoundWord {
   word: string;
@@ -11,10 +12,12 @@ interface ResultsProps {
   words: FoundWord[];
   totalLetters: number;
   rejectedWords: string[];
+  syllable: string;
   onRetry: () => void;
 }
 
-const Results = ({ words, totalLetters, rejectedWords, onRetry }: ResultsProps) => {
+const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry }: ResultsProps) => {
+  const { toast } = useToast();
   const totalScore = words.reduce((sum, w) => sum + w.score, 0);
   const comparisonStat = generateComparisonStat(totalLetters);
   
@@ -24,6 +27,34 @@ const Results = ({ words, totalLetters, rejectedWords, onRetry }: ResultsProps) 
         word.length > longest.length ? word : longest
       , rejectedWords[0])
     : null;
+
+  const handleShare = async () => {
+    const shareText = `I found ${words.length} word${words.length !== 1 ? 's' : ''} with ${totalLetters} letters using the syllable "${syllable}"! 🎯\n\nPlay SYLLABLE now!`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'SYLLABLE Game Results',
+          text: shareText,
+        });
+      } catch (error) {
+        // User cancelled or error occurred
+        if ((error as Error).name !== 'AbortError') {
+          copyToClipboard(shareText);
+        }
+      }
+    } else {
+      copyToClipboard(shareText);
+    }
+  };
+
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text);
+    toast({
+      title: "Copied to clipboard!",
+      description: "Share your results with friends",
+    });
+  };
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
@@ -38,6 +69,14 @@ const Results = ({ words, totalLetters, rejectedWords, onRetry }: ResultsProps) 
           <Star className="w-6 h-6 text-accent fill-accent animate-pulse" style={{ animationDelay: '0s' }} />
           <Star className="w-8 h-8 text-accent fill-accent animate-pulse" style={{ animationDelay: '0.2s' }} />
           <Star className="w-6 h-6 text-accent fill-accent animate-pulse" style={{ animationDelay: '0.4s' }} />
+        </div>
+
+        {/* Syllable Display */}
+        <div className="animate-fade-in" style={{ animationDelay: '0.15s' }}>
+          <div className="text-sm text-muted-foreground mb-2">Syllable used:</div>
+          <div className="text-3xl font-bold tracking-wider bg-secondary px-4 py-2 rounded-lg inline-block">
+            {syllable}
+          </div>
         </div>
 
         {/* Main Results */}
@@ -71,6 +110,15 @@ const Results = ({ words, totalLetters, rejectedWords, onRetry }: ResultsProps) 
 
         {/* Action Buttons */}
         <div className="space-y-3 pt-6 animate-fade-in" style={{ animationDelay: '0.5s' }}>
+          <Button
+            onClick={handleShare}
+            size="lg"
+            variant="outline"
+            className="w-full max-w-sm text-lg py-6 font-bold uppercase tracking-wider"
+          >
+            <Share2 className="w-5 h-5 mr-2" />
+            Share Results
+          </Button>
           <Button
             onClick={onRetry}
             size="lg"

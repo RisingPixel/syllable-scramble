@@ -11,7 +11,7 @@ interface FoundWord {
 }
 
 interface GameProps {
-  onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[]) => void;
+  onGameEnd: (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string) => void;
 }
 
 const Game = ({ onGameEnd }: GameProps) => {
@@ -36,7 +36,7 @@ const Game = ({ onGameEnd }: GameProps) => {
 
   const handleTimeUp = () => {
     const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
-    onGameEnd(foundWords, totalLetters, rejectedWords);
+    onGameEnd(foundWords, totalLetters, rejectedWords, syllable);
   };
 
   const handleSubmit = async (e: FormEvent) => {

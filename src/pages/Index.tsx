@@ -14,19 +14,20 @@ const Index = () => {
     words: FoundWord[];
     totalLetters: number;
     rejectedWords: string[];
-  }>({ words: [], totalLetters: 0, rejectedWords: [] });
+    syllable: string;
+  }>({ words: [], totalLetters: 0, rejectedWords: [], syllable: '' });
 
   const handleStart = () => {
     setGameState('playing');
   };
 
-  const handleGameEnd = (words: FoundWord[], totalLetters: number, rejectedWords: string[]) => {
-    setGameResults({ words, totalLetters, rejectedWords });
+  const handleGameEnd = (words: FoundWord[], totalLetters: number, rejectedWords: string[], syllable: string) => {
+    setGameResults({ words, totalLetters, rejectedWords, syllable });
     setGameState('results');
   };
 
   const handleRetry = () => {
-    setGameResults({ words: [], totalLetters: 0, rejectedWords: [] });
+    setGameResults({ words: [], totalLetters: 0, rejectedWords: [], syllable: '' });
     setGameState('playing');
   };
 
@@ -39,6 +40,7 @@ const Index = () => {
           words={gameResults.words}
           totalLetters={gameResults.totalLetters}
           rejectedWords={gameResults.rejectedWords}
+          syllable={gameResults.syllable}
           onRetry={handleRetry}
         />
       )}
