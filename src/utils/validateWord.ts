@@ -5,7 +5,7 @@ const loadDictionary = async (): Promise<Set<string>> => {
   if (dictionary) return dictionary;
   
   try {
-    const response = await fetch('/src/data/words_raw.txt');
+    const response = await fetch('/words_raw.txt');
     const text = await response.text();
     
     const words = text
