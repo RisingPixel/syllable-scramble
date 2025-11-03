@@ -173,9 +173,9 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
       // Set specific error message based on error type
       const errorMessages = {
-        too_short: "Troppo corta!",
-        missing_syllable: `Deve contenere "${syllable.toUpperCase()}"!`,
-        not_in_dictionary: "Parola non trovata!",
+        too_short: "Too short!",
+        missing_syllable: `Must contain "${syllable.toUpperCase()}"!`,
+        not_in_dictionary: "Word not fond!",
       };
 
       setErrorMessage(errorMessages[validation.errorType!] || "Errore!");
