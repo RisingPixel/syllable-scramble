@@ -33,7 +33,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Find Words</h3>
-                <p className="text-muted-foreground">Type words that contain the given syllable anywhere in the word</p>
+                <p className="text-muted-foreground">Type words that contain the given syllable</p>
               </div>
             </div>
 
@@ -44,7 +44,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
               </div>
               <div>
                 <h3 className="font-semibold text-lg mb-1">Beat the Clock</h3>
-                <p className="text-muted-foreground">You have 60 seconds to find as many words as possible</p>
+                <p className="text-muted-foreground">Find as many words as possible</p>
               </div>
             </div>
           </div>
