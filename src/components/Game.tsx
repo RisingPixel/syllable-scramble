@@ -23,17 +23,25 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   const [timeLeft, setTimeLeft] = useState(60);
   const [errorMessage, setErrorMessage] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const startTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
     inputRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (timeLeft > 0) {
-      const timer = setTimeout(() => setTimeLeft(timeLeft - 1), 1000);
-      return () => clearTimeout(timer);
-    }
-  }, [timeLeft]);
+    const interval = setInterval(() => {
+      const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      const remaining = Math.max(0, 60 - elapsed);
+      setTimeLeft(remaining);
+      
+      if (remaining === 0) {
+        clearInterval(interval);
+      }
+    }, 100);
+
+    return () => clearInterval(interval);
+  }, []);
 
   const handleTimeUp = () => {
     const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
