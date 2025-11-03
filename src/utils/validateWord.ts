@@ -27,15 +27,30 @@ const loadDictionary = async (): Promise<Set<string>> => {
 // Initialize dictionary immediately
 loadDictionary();
 
-export const validateWord = async (word: string, syllable: string): Promise<boolean> => {
+export const validateWord = async (word: string, syllable: string): Promise<{
+  valid: boolean;
+  errorType?: 'too_short' | 'missing_syllable' | 'not_in_dictionary';
+}> => {
   const normalized = word.toLowerCase().trim();
   const syllableNorm = syllable.toLowerCase();
   
-  if (normalized.length < 2) return false;
-  if (!normalized.includes(syllableNorm)) return false;
+  // Check 1: Lunghezza minima
+  if (normalized.length < 2) {
+    return { valid: false, errorType: 'too_short' };
+  }
   
+  // Check 2: Contiene la sillaba?
+  if (!normalized.includes(syllableNorm)) {
+    return { valid: false, errorType: 'missing_syllable' };
+  }
+  
+  // Check 3: Esiste nel dizionario?
   const dict = await loadDictionary();
-  return dict.has(normalized);
+  if (!dict.has(normalized)) {
+    return { valid: false, errorType: 'not_in_dictionary' };
+  }
+  
+  return { valid: true };
 };
 
 export const calculateScore = (word: string, syllable: string): number => {

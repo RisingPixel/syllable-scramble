@@ -84,11 +84,11 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
     }
 
     // Validate word
-    const isValid = await validateWord(trimmedInput, syllable);
+    const validation = await validateWord(trimmedInput, syllable);
     const now = Date.now();
     const timestamp = now - startTimeRef.current;
     
-    if (isValid) {
+    if (validation.valid) {
       // Combo logic
       let newCombo = { ...comboState };
       
@@ -154,7 +154,15 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
       if (!rejectedWords.includes(trimmedInput.toUpperCase())) {
         setRejectedWords([...rejectedWords, trimmedInput.toUpperCase()]);
       }
-      setErrorMessage('Invalid word!');
+      
+      // Set specific error message based on error type
+      const errorMessages = {
+        too_short: 'Troppo corta!',
+        missing_syllable: `Deve contenere "${syllable.toUpperCase()}"!`,
+        not_in_dictionary: 'Parola non trovata!'
+      };
+      
+      setErrorMessage(errorMessages[validation.errorType!] || 'Errore!');
       setTimeout(() => setErrorMessage(''), 1500);
       setInputValue('');
     }
@@ -224,8 +232,10 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
               spellCheck="false"
             />
             {errorMessage && (
-              <div className="absolute -bottom-8 left-0 right-0 text-center text-destructive font-medium animate-fade-in">
-                {errorMessage}
+              <div className="absolute -bottom-8 left-0 right-0 text-center animate-fade-in">
+                <span className="inline-block bg-destructive text-white font-bold px-4 py-2 rounded-lg shadow-[0_0_0_3px_white,0_0_0_5px_rgb(239,68,68)]">
+                  {errorMessage}
+                </span>
               </div>
             )}
           </div>
