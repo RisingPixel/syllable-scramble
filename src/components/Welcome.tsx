@@ -9,7 +9,8 @@ interface WelcomeProps {
 const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 bg-background">
-      <div className="w-full max-w-2xl space-y-4 sm:space-y-6 md:space-y-8 my-auto max-h-[95vh] overflow-y-auto animate-scale-in">
+      {/* Portrait Layout */}
+      <div className="w-full max-w-2xl space-y-4 sm:space-y-6 md:space-y-8 my-auto max-h-[95vh] overflow-y-auto animate-scale-in landscape:hidden">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-2 sm:mb-4">SYLLABLE</h1>
@@ -75,6 +76,81 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         >
           Start Game
         </Button>
+      </div>
+
+      {/* Landscape Layout */}
+      <div className="hidden landscape:flex w-full max-w-6xl max-h-screen overflow-hidden gap-6 items-center animate-scale-in px-4">
+        {/* Left Column */}
+        <div className="w-1/2 space-y-3">
+          {/* Header */}
+          <div className="text-center">
+            <h1 className="text-3xl font-bold tracking-tight mb-1">SYLLABLE</h1>
+            <p className="text-sm text-muted-foreground">A fast-paced word game</p>
+            {challengeSyllable && (
+              <div className="mt-2 inline-block bg-accent/20 text-accent px-3 py-1 rounded-lg text-xs font-bold animate-fade-in">
+                🎯 Challenge: {challengeSyllable}
+              </div>
+            )}
+          </div>
+
+          {/* Instructions Card */}
+          <div className="bg-card border border-border rounded-xl p-4 space-y-3">
+            <h2 className="text-lg font-bold text-center mb-2">How to Play</h2>
+
+            <div className="space-y-2">
+              {/* Instruction 1 */}
+              <div className="flex gap-3 items-start">
+                <div className="bg-accent/20 p-2 rounded-lg shrink-0">
+                  <Target className="w-4 h-4 text-accent" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-0.5">Find Words</h3>
+                  <p className="text-xs text-muted-foreground">Type words with the syllable</p>
+                </div>
+              </div>
+
+              {/* Instruction 2 */}
+              <div className="flex gap-3 items-start">
+                <div className="bg-warning/20 p-2 rounded-lg shrink-0">
+                  <Clock className="w-4 h-4 text-warning" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-sm mb-0.5">Beat the Clock</h3>
+                  <p className="text-xs text-muted-foreground">Find as many as possible</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="w-1/2 space-y-3">
+          {/* Example */}
+          <div className="bg-secondary/50 border border-border rounded-xl p-3">
+            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider text-center">Example</p>
+            <div className="text-center space-y-2">
+              <p className="text-sm">
+                Syllable: <span className="font-bold bg-accent/30 px-2 py-1 rounded">UR</span>
+              </p>
+              <p className="text-xs text-muted-foreground">You can type:</p>
+              <div className="flex flex-wrap justify-center gap-1.5 text-xs font-medium">
+                <span className="bg-card px-2 py-1 rounded-lg border border-border">BURN</span>
+                <span className="bg-card px-2 py-1 rounded-lg border border-border">TURTLE</span>
+                <span className="bg-card px-2 py-1 rounded-lg border border-border">PURPLE</span>
+                <span className="bg-card px-2 py-1 rounded-lg border border-border">HAMBURGER</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Start Button */}
+          <Button
+            onClick={onStart}
+            size="lg"
+            className="w-full text-base py-5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
+          >
+            Start Game
+          </Button>
+        </div>
       </div>
     </div>
   );

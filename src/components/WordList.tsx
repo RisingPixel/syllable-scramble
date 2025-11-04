@@ -10,9 +10,10 @@ interface FoundWord {
 interface WordListProps {
   words: FoundWord[];
   syllable: string;
+  isLandscape?: boolean;
 }
 
-const WordList = ({ words, syllable }: WordListProps) => {
+const WordList = ({ words, syllable, isLandscape = false }: WordListProps) => {
   const [showScore, setShowScore] = useState<string | null>(null);
 
   useEffect(() => {
@@ -60,25 +61,40 @@ const WordList = ({ words, syllable }: WordListProps) => {
   };
 
   return (
-    <div className="w-full max-w-md space-y-2">
+    <div className={cn("w-full space-y-2", isLandscape ? "" : "max-w-md")}>
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-sm font-medium text-muted-foreground uppercase tracking-wider">
+        <h3 className={cn(
+          "font-medium text-muted-foreground uppercase tracking-wider",
+          isLandscape ? "text-xs" : "text-sm"
+        )}>
           Found Words
         </h3>
-        <span className="text-sm text-muted-foreground">
+        <span className={cn(
+          "text-muted-foreground",
+          isLandscape ? "text-xs" : "text-sm"
+        )}>
           {words.length} {words.length === 1 ? 'word' : 'words'}
         </span>
       </div>
-      <div className="max-h-48 overflow-y-auto space-y-1 bg-card rounded-lg p-3 border border-border">
+      <div className={cn(
+        "overflow-y-auto space-y-1 bg-card rounded-lg p-3 border border-border",
+        isLandscape ? "max-h-[70vh]" : "max-h-48"
+      )}>
         {words.length === 0 ? (
-          <p className="text-muted-foreground text-center py-4">
+          <p className={cn(
+            "text-muted-foreground text-center py-4",
+            isLandscape ? "text-sm" : ""
+          )}>
             Start typing to find words...
           </p>
         ) : (
           words.map((item, index) => (
             <div
               key={`${item.word}-${index}`}
-              className="flex justify-between items-center text-lg animate-slide-up"
+              className={cn(
+                "flex justify-between items-center animate-slide-up",
+                isLandscape ? "text-base" : "text-lg"
+              )}
             >
               <span className={cn(
                 "uppercase font-medium transition-all",

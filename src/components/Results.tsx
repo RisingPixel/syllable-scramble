@@ -66,11 +66,12 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6 bg-background">
+    <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-background">
       {/* Confetti for high scores */}
       {finalScore >= 500 && <Confetti count={finalScore >= 1000 ? 100 : 50} />}
 
-      <div className="w-full max-w-xl space-y-6 text-center">
+      {/* Portrait Layout */}
+      <div className="w-full max-w-xl space-y-6 text-center landscape:hidden">
         {/* Header */}
         <div className="animate-fade-in">
           <h1 className="text-4xl font-bold tracking-tight mb-8">SYLLABLE</h1>
@@ -145,6 +146,87 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
           >
             Play Again
           </Button>
+        </div>
+      </div>
+
+      {/* Landscape Layout */}
+      <div className="hidden landscape:flex w-full max-w-5xl max-h-screen overflow-hidden gap-6 items-center animate-scale-in px-4">
+        {/* Left Column */}
+        <div className="w-1/2 text-center space-y-3">
+          {/* Header + Stars */}
+          <div className="animate-fade-in">
+            <h1 className="text-2xl font-bold tracking-tight mb-2">SYLLABLE</h1>
+            <div className="flex justify-center gap-2 mb-3">
+              <Star className="w-4 h-4 text-accent fill-accent animate-pulse" style={{ animationDelay: "0s" }} />
+              <Star className="w-5 h-5 text-accent fill-accent animate-pulse" style={{ animationDelay: "0.2s" }} />
+              <Star className="w-4 h-4 text-accent fill-accent animate-pulse" style={{ animationDelay: "0.4s" }} />
+            </div>
+          </div>
+
+          {/* Syllable Display */}
+          <div className="animate-fade-in">
+            <div className="text-xs text-muted-foreground mb-1">Syllable used:</div>
+            <div className="text-2xl font-bold tracking-wider bg-secondary px-3 py-1.5 rounded-lg inline-block">
+              {syllable}
+            </div>
+          </div>
+
+          {/* Score Display */}
+          <div className="bg-card border border-border rounded-xl p-3 max-w-xs mx-auto animate-fade-in">
+            <div className="text-xs text-muted-foreground mb-1">Total Score</div>
+            <div className="text-3xl font-bold text-accent">{totalScore}</div>
+            {achievementBonus > 0 && (
+              <div className="mt-1 text-xs">
+                <span className="text-muted-foreground">+ Bonus: </span>
+                <span className="text-green-400 font-bold">{achievementBonus} pts</span>
+                <div className="text-xl font-bold text-foreground mt-0.5">= {finalScore}</div>
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Right Column */}
+        <div className="w-1/2 space-y-3">
+          {/* Main Results */}
+          <div className="text-center space-y-2 animate-fade-in">
+            <div className="text-lg text-muted-foreground">You found</div>
+            <div className="text-4xl font-bold">
+              <span className="text-accent">{words.length}</span> {words.length === 1 ? "word" : "words"}
+            </div>
+            <div className="text-sm text-muted-foreground">
+              with <span className="text-foreground font-bold text-base">{totalLetters}</span> letters!
+            </div>
+          </div>
+
+          {/* Fun Fact */}
+          {rejectedWords.length > 0 && longestRejected && (
+            <div className="animate-fade-in">
+              <p className="text-xs text-muted-foreground/70 italic max-w-xs mx-auto">
+                "It's a pity that you also wrote {rejectedWords.length} word{rejectedWords.length !== 1 ? "s" : ""} we
+                didn't know about... Is "{longestRejected}" an actual word!?"
+              </p>
+            </div>
+          )}
+
+          {/* Action Buttons */}
+          <div className="flex gap-2 animate-fade-in">
+            <Button
+              onClick={handleShare}
+              size="lg"
+              variant="outline"
+              className="flex-1 text-sm py-4 font-bold uppercase tracking-wider"
+            >
+              <Share2 className="w-4 h-4 mr-1" />
+              Share
+            </Button>
+            <Button
+              onClick={onRetry}
+              size="lg"
+              className="flex-1 text-sm py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider"
+            >
+              Play Again
+            </Button>
+          </div>
         </div>
       </div>
     </div>
