@@ -21,9 +21,12 @@ interface GameProps {
     achievements: Achievement[],
   ) => void;
   challengeSyllable?: string | null;
+  gameplayStart: () => void;
+  gameplayStop: () => void;
+  isAdPlaying: boolean;
 }
 
-const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
+const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdPlaying }: GameProps) => {
   const { toast } = useToast();
   const [syllable] = useState(challengeSyllable || getRandomSyllable());
   const [inputValue, setInputValue] = useState("");
@@ -42,8 +45,13 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   const startTimeRef = useRef<number>(Date.now());
 
   useEffect(() => {
+    gameplayStart();
     inputRef.current?.focus();
-  }, []);
+    
+    return () => {
+      gameplayStop();
+    };
+  }, [gameplayStart, gameplayStop]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -61,6 +69,8 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
   }, []);
 
   const handleTimeUp = () => {
+    gameplayStop();
+    
     const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
     const allAchievements = Array.from(unlockedAchievements)
       .map((id) =>
@@ -83,6 +93,8 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
+
+    if (isAdPlaying) return;
 
     const trimmedInput = inputValue.trim();
     if (!trimmedInput) return;
