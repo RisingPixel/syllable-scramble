@@ -261,60 +261,64 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       </div>
 
       {/* Landscape Layout */}
-      <div className="hidden landscape:flex w-full max-h-screen overflow-hidden gap-4 animate-scale-in px-4">
-        {/* Left Column - 40% */}
-        <div className="w-[40%] flex flex-col justify-center space-y-3">
-          {/* Header */}
-          <div className="text-center">
-            <h1 className="text-3xl font-bold tracking-tight mb-1">SYLLABLE</h1>
-            <p className="text-xs text-muted-foreground">Find words with the syllable</p>
-          </div>
+      <div className="hidden landscape:flex landscape:flex-col w-full h-screen overflow-hidden animate-scale-in p-4 gap-4">
+        {/* Header centrato */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold tracking-tight mb-1">SYLLABLE</h1>
+          <p className="text-xs text-muted-foreground">Find words with the syllable</p>
+        </div>
 
-          {/* Timer and Score */}
-          <div className="flex justify-between items-center px-2">
-            <div className="text-lg font-bold">
-              Score: <span className="text-accent">{totalScore}</span>
-            </div>
-            <Timer timeLeft={timeLeft} />
+        {/* Score e Timer allineati */}
+        <div className="flex justify-between items-center px-4">
+          <div className="text-lg font-bold">
+            Score: <span className="text-accent">{totalScore}</span>
           </div>
+          <Timer timeLeft={timeLeft} />
+        </div>
 
-          {/* Syllable Display */}
-          <div className="bg-card border border-border rounded-xl p-4 text-center">
-            <p className="text-xs text-muted-foreground mb-1 uppercase tracking-wider">Target</p>
-            <div className="text-4xl font-bold tracking-wider bg-secondary px-4 py-2 rounded-lg inline-block">
+        {/* Due colonne 50%/50% */}
+        <div className="grid grid-cols-2 gap-4 flex-1">
+          {/* Colonna sinistra - TARGET */}
+          <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center justify-center">
+            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">TARGET</p>
+            <div className="text-5xl font-bold tracking-wider bg-secondary px-6 py-3 rounded-lg">
               {syllable}
             </div>
           </div>
-
-          {/* Input Form */}
-          <form onSubmit={handleSubmit} className="space-y-2">
-            <Input
-              ref={inputRef}
-              type="text"
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-              placeholder="Type a word..."
-              className="text-lg py-3 px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
-              autoComplete="off"
-              autoCapitalize="off"
-              spellCheck="false"
-            />
-            <Button
-              type="submit"
-              size="lg"
-              className="w-full text-base py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
-            >
-              Submit
-            </Button>
-          </form>
-        </div>
-
-        {/* Right Column - 60% */}
-        <div className="w-[60%] flex items-center justify-center">
-          <div className="w-full max-h-[85vh]">
-            <WordList words={foundWords} syllable={syllable} isLandscape />
+          
+          {/* Colonna destra - FOUND WORDS */}
+          <div className="bg-card border border-border rounded-xl p-4 flex flex-col">
+            <div className="flex justify-between items-center mb-2">
+              <p className="text-xs text-muted-foreground uppercase tracking-wider">FOUND WORDS</p>
+              <p className="text-xs text-muted-foreground">{foundWords.length} words</p>
+            </div>
+            <div className="flex-1 overflow-y-auto">
+              <WordList words={foundWords} syllable={syllable} isLandscape />
+            </div>
           </div>
         </div>
+
+        {/* Input e Bottone full-width */}
+        <form onSubmit={handleSubmit} className="space-y-2 w-full">
+          <Input
+            ref={inputRef}
+            type="text"
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
+            placeholder="TYPE A WORD..."
+            className="text-lg py-3 px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
+            autoComplete="off"
+            autoCapitalize="off"
+            spellCheck="false"
+          />
+          <Button
+            type="submit"
+            size="lg"
+            className="w-full text-base py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
+          >
+            Submit
+          </Button>
+        </form>
       </div>
     </div>
   );
