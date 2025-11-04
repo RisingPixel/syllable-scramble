@@ -1,17 +1,8 @@
-import { useEffect } from 'react';
-
 interface TimerProps {
   timeLeft: number;
-  onTimeUp: () => void;
 }
 
-const Timer = ({ timeLeft, onTimeUp }: TimerProps) => {
-  useEffect(() => {
-    if (timeLeft === 0) {
-      onTimeUp();
-    }
-  }, [timeLeft, onTimeUp]);
-
+const Timer = ({ timeLeft }: TimerProps) => {
   const isLowTime = timeLeft <= 10;
 
   return (

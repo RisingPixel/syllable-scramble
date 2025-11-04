@@ -53,6 +53,7 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
 
       if (remaining === 0) {
         clearInterval(interval);
+        handleTimeUp();
       }
     }, 100);
 
@@ -154,11 +155,8 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
             duration: 4000,
           });
         });
-        setUnlockedAchievements((prev) => {
-          const updated = new Set(prev);
-          newlyUnlocked.forEach((a) => updated.add(a.id));
-          return updated;
-        });
+        // Simplified achievement unlocking
+        setUnlockedAchievements((prev) => new Set([...prev, ...newlyUnlocked.map((a) => a.id)]));
       }
 
       setInputValue("");
@@ -172,14 +170,13 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
         setRejectedWords([...rejectedWords, trimmedInput.toUpperCase()]);
       }
 
-      // Set specific error message based on error type
-      const errorMessages = {
-        too_short: "Too short!",
-        missing_syllable: `Must contain "${syllable.toUpperCase()}"!`,
-        not_in_dictionary: "Word not found!",
-      };
+      // Inline error message mapping
+      const errorMessage = 
+        validation.errorType === 'too_short' ? "Too short!" :
+        validation.errorType === 'missing_syllable' ? `Must contain "${syllable.toUpperCase()}"!` :
+        validation.errorType === 'not_in_dictionary' ? "Word not found!" : "Error!";
 
-      setErrorPopup(errorMessages[validation.errorType!] || "Error!");
+      setErrorPopup(errorMessage);
       setInputValue("");
       setTimeout(() => inputRef.current?.focus(), 50);
     }
@@ -213,7 +210,7 @@ const Game = ({ onGameEnd, challengeSyllable }: GameProps) => {
           <div className="text-2xl font-bold">
             Score: <span className="text-accent">{totalScore}</span>
           </div>
-          <Timer timeLeft={timeLeft} onTimeUp={handleTimeUp} />
+          <Timer timeLeft={timeLeft} />
         </div>
 
         {/* Syllable Display */}

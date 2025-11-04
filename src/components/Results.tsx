@@ -2,12 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Star, Share2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Confetti from "./Confetti";
-import { Achievement } from "@/types/achievements";
-
-interface FoundWord {
-  word: string;
-  score: number;
-}
+import { Achievement, FoundWord } from "@/types/achievements";
 
 interface ResultsProps {
   words: FoundWord[];
@@ -26,16 +21,13 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
   const achievementBonus = achievements.reduce((sum, a) => sum + a.points, 0);
   const finalScore = totalScore + achievementBonus;
 
-  // Score tier calculation
-  const getScoreTier = (score: number) => {
-    if (score >= 1000) return { name: "LEGENDARY", color: "from-yellow-400 to-orange-500", icon: "👑" };
-    if (score >= 700) return { name: "DIAMOND", color: "from-blue-400 to-purple-500", icon: "💎" };
-    if (score >= 500) return { name: "GOLD", color: "from-yellow-400 to-yellow-600", icon: "🏆" };
-    if (score >= 300) return { name: "SILVER", color: "from-gray-300 to-gray-400", icon: "🥈" };
-    return { name: "BRONZE", color: "from-orange-300 to-orange-400", icon: "🥉" };
-  };
-
-  const tier = getScoreTier(finalScore);
+  // Inline score tier calculation
+  const tier = 
+    finalScore >= 1000 ? { name: "LEGENDARY", color: "from-yellow-400 to-orange-500", icon: "👑" } :
+    finalScore >= 700 ? { name: "DIAMOND", color: "from-blue-400 to-purple-500", icon: "💎" } :
+    finalScore >= 500 ? { name: "GOLD", color: "from-yellow-400 to-yellow-600", icon: "🏆" } :
+    finalScore >= 300 ? { name: "SILVER", color: "from-gray-300 to-gray-400", icon: "🥈" } :
+    { name: "BRONZE", color: "from-orange-300 to-orange-400", icon: "🥉" };
 
   // Find the longest rejected word
   const longestRejected =
@@ -57,20 +49,20 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
       } catch (error) {
         // User cancelled or error occurred
         if ((error as Error).name !== "AbortError") {
-          copyToClipboard(shareText);
+          navigator.clipboard.writeText(shareText);
+          toast({
+            title: "Copied to clipboard!",
+            description: "Share your results with friends",
+          });
         }
       }
     } else {
-      copyToClipboard(shareText);
+      navigator.clipboard.writeText(shareText);
+      toast({
+        title: "Copied to clipboard!",
+        description: "Share your results with friends",
+      });
     }
-  };
-
-  const copyToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text);
-    toast({
-      title: "Copied to clipboard!",
-      description: "Share your results with friends",
-    });
   };
 
   return (

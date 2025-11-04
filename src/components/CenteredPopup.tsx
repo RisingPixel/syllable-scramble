@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 
 interface CenteredPopupProps {
   children: React.ReactNode;
@@ -13,23 +13,11 @@ const CenteredPopup = ({
   type = 'success',
   onComplete 
 }: CenteredPopupProps) => {
-  const [isMobile, setIsMobile] = useState(false);
   const onCompleteRef = useRef(onComplete);
 
   useEffect(() => {
     onCompleteRef.current = onComplete;
   }, [onComplete]);
-
-  useEffect(() => {
-    setIsMobile(window.innerWidth < 768);
-    
-    const handleResize = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-    
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -38,6 +26,8 @@ const CenteredPopup = ({
     return () => clearTimeout(timer);
   }, [duration]);
 
+  // Inline mobile detection
+  const isMobile = window.innerWidth < 768;
   const getPositionStyle = () => {
     if (isMobile) {
       // Mobile: Position above keyboard area
