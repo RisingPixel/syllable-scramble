@@ -281,8 +281,8 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           </div>
         </div>
 
-        {/* Due colonne con flex-1 per occupare tutto lo spazio */}
-        <div className="grid grid-cols-2 gap-2 flex-1 overflow-hidden">
+        {/* Due colonne con altezza fissa per evitare scroll */}
+        <div className="grid grid-cols-2 gap-2 overflow-hidden h-[60vh]">
           {/* Card TARGET - sinistra */}
           <div className="bg-card border border-border rounded-lg p-3 flex flex-col items-center justify-center h-full">
             <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">TARGET</p>
