@@ -211,7 +211,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       )}
 
       {/* Portrait Layout */}
-      <div className="w-full max-w-2xl space-y-3 p-3 animate-scale-in landscape:hidden">
+      <div className="w-full max-w-2xl space-y-2 p-3 animate-scale-in landscape:hidden">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">SYLLABLE</h1>
@@ -226,11 +226,35 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           <Timer timeLeft={timeLeft} />
         </div>
 
-        {/* Syllable Display */}
-        <div className="bg-card border border-border rounded-2xl p-4 sm:p-5 text-center">
-          <p className="text-xs sm:text-sm text-muted-foreground mb-1 uppercase tracking-wider">Find words with</p>
-          <div className="text-3xl sm:text-5xl font-bold tracking-wider bg-secondary px-3 sm:px-5 py-2 sm:py-3 rounded-xl inline-block">
-            {syllable}
+        {/* Two Column Layout: Target + Found Words */}
+        <div className="grid grid-cols-2 gap-2">
+          {/* Left Column: Target Syllable */}
+          <div className="bg-card border border-border rounded-xl p-3 flex flex-col items-center justify-center">
+            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Target</p>
+            <div className="text-4xl sm:text-5xl font-bold tracking-wider bg-secondary px-4 py-3 rounded-lg">
+              {syllable}
+            </div>
+          </div>
+
+          {/* Right Column: Found Words */}
+          <div className="bg-card border border-border rounded-xl p-3">
+            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Found Words</p>
+            <div className="overflow-y-auto max-h-32 space-y-1">
+              {foundWords.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-2">
+                  Start typing...
+                </p>
+              ) : (
+                foundWords.slice().reverse().map((item, index) => (
+                  <div
+                    key={`${item.word}-${index}`}
+                    className="text-sm font-medium uppercase text-foreground"
+                  >
+                    {item.word}
+                  </div>
+                ))
+              )}
+            </div>
           </div>
         </div>
 
@@ -255,9 +279,6 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
             Submit
           </Button>
         </form>
-
-        {/* Word List */}
-        <WordList words={foundWords} syllable={syllable} />
       </div>
 
       {/* Landscape Layout */}
