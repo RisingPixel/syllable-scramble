@@ -211,7 +211,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       )}
 
       {/* Portrait Layout */}
-      <div className="w-full max-w-2xl space-y-2 p-3 animate-scale-in landscape:hidden">
+      <div className="w-full max-w-2xl space-y-3 px-3 animate-scale-in landscape:hidden">
         {/* Header */}
         <div className="text-center">
           <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">SYLLABLE</h1>
@@ -227,9 +227,9 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
         </div>
 
         {/* Two Column Layout: Target + Found Words */}
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-2 gap-3">
           {/* Left Column: Target Syllable */}
-          <div className="bg-card border border-border rounded-xl p-3 flex flex-col items-center justify-center">
+          <div className="bg-card border border-border rounded-xl p-4 min-h-[200px] flex flex-col items-center justify-center text-center">
             <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Target</p>
             <div className="text-4xl sm:text-5xl font-bold tracking-wider bg-secondary px-4 py-3 rounded-lg">
               {syllable}
@@ -237,7 +237,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           </div>
 
           {/* Right Column: Found Words */}
-          <div className="bg-card border border-border rounded-xl p-3">
+          <div className="bg-card border border-border rounded-xl p-4 min-h-[200px] flex flex-col">
             <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Found Words</p>
             <div className="overflow-y-auto max-h-32 space-y-1">
               {foundWords.length === 0 ? (
@@ -259,14 +259,14 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
         </div>
 
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="space-y-2">
+        <form onSubmit={handleSubmit} className="space-y-3 w-full">
           <Input
             ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type a word..."
-            className="text-lg sm:text-xl py-3 sm:py-4 px-3 sm:px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
+            className="text-lg sm:text-xl py-3 sm:py-4 px-3 sm:px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
             autoComplete="off"
             autoCapitalize="off"
             spellCheck="false"
