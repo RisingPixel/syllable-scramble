@@ -10,7 +10,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 bg-background">
       {/* Portrait Layout */}
-      <div className="w-full max-w-2xl space-y-4 sm:space-y-6 md:space-y-8 my-auto max-h-[95vh] overflow-y-auto landscape:hidden">
+      <div className="w-full max-w-2xl space-y-3 sm:space-y-4 md:space-y-5 my-auto max-h-[95vh] overflow-y-auto landscape:hidden">
         {/* Header */}
         <div className="text-center animate-fade-in">
           <h1 className="text-4xl sm:text-5xl md:text-6xl font-bold tracking-tight mb-2 sm:mb-4 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
@@ -31,9 +31,9 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
           <div className="space-y-4">
             {/* Instruction 1 */}
             <div className="flex gap-4 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.3s" }}>
-              <div className="bg-accent/20 p-2 sm:p-3 rounded-lg shrink-0 animate-float">
-                <Target className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
-              </div>
+          <div className="bg-accent/20 p-2 sm:p-3 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
+            <Target className="w-5 h-5 sm:w-6 sm:h-6 text-accent" />
+          </div>
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1">Find Words</h3>
                 <p className="text-sm sm:text-base text-muted-foreground">Type words that contain the given syllable</p>
@@ -42,9 +42,9 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
 
             {/* Instruction 2 */}
             <div className="flex gap-4 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.4s" }}>
-              <div className="bg-warning/20 p-2 sm:p-3 rounded-lg shrink-0 animate-float" style={{ animationDelay: "0.5s" }}>
-                <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-warning" />
-              </div>
+          <div className="bg-warning/20 p-2 sm:p-3 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
+            <Clock className="w-5 h-5 sm:w-6 sm:h-6 text-warning" />
+          </div>
               <div>
                 <h3 className="font-semibold text-base sm:text-lg mb-1">Beat the Clock</h3>
                 <p className="text-sm sm:text-base text-muted-foreground">Find as many words as possible</p>
@@ -108,9 +108,9 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
       </div>
 
       {/* Landscape Layout */}
-      <div className="hidden landscape:flex w-full max-w-6xl max-h-screen overflow-hidden gap-6 items-center px-4">
+      <div className="hidden landscape:flex w-full max-w-6xl h-screen overflow-hidden gap-4 items-center justify-center px-4">
         {/* Left Column */}
-        <div className="w-1/2 space-y-3">
+      <div className="w-1/2 flex flex-col justify-center space-y-3">
           {/* Header */}
           <div className="text-center animate-fade-in">
             <h1 className="text-3xl font-bold tracking-tight mb-1 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
@@ -155,7 +155,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         </div>
 
         {/* Right Column */}
-        <div className="w-1/2 space-y-3">
+        <div className="w-1/2 flex flex-col justify-center space-y-3">
           {/* Example */}
           <div className="bg-secondary/50 border border-border rounded-xl p-3 hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
             <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider text-center">Example</p>
