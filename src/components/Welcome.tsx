@@ -85,46 +85,41 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
       </div>
 
       {/* Landscape Layout */}
-      <div className="hidden landscape:flex landscape:flex-col w-full max-w-5xl h-screen justify-center px-6 py-2 gap-2">
+      <div className="hidden landscape:flex landscape:flex-col w-full max-w-5xl h-screen justify-center items-center px-6 gap-3">
         {/* Header - Centered Top */}
         <div className="text-center animate-fade-in">
           <h1 className="text-3xl font-bold tracking-tight mb-1 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
             SYLLABLE
           </h1>
           <p className="text-sm text-muted-foreground">A fast-paced word game</p>
-          {challengeSyllable && (
-            <div className="mt-1 inline-block bg-accent/20 text-accent px-2 py-0.5 rounded-lg text-xs font-bold animate-fade-in">
-              🎯 Challenge: {challengeSyllable}
-            </div>
-          )}
         </div>
 
         {/* Two Columns - Middle */}
-        <div className="flex gap-3 flex-1 max-h-[45vh]">
+        <div className="flex gap-4 w-full">
           {/* Left Column - How to Play */}
           <div className="w-1/2">
-            <div className="bg-card border border-border rounded-xl p-3 h-full hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
-              <h2 className="text-base font-bold text-center mb-2">How to Play</h2>
+            <div className="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
+              <h2 className="text-base font-bold text-center mb-3">How to Play</h2>
               
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 {/* Instruction 1 */}
-                <div className="flex gap-2 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.3s" }}>
-                  <div className="bg-accent/20 p-1.5 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
+                <div className="flex gap-3 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.3s" }}>
+                  <div className="bg-accent/20 p-2 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
                     <Target className="w-4 h-4 text-accent" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm mb-0">Find Words</h3>
+                    <h3 className="font-semibold text-sm">Find Words</h3>
                     <p className="text-xs text-muted-foreground">Type words that contain the syllable</p>
                   </div>
                 </div>
 
                 {/* Instruction 2 */}
-                <div className="flex gap-2 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.4s" }}>
-                  <div className="bg-warning/20 p-1.5 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
+                <div className="flex gap-3 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.4s" }}>
+                  <div className="bg-warning/20 p-2 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
                     <Clock className="w-4 h-4 text-warning" />
                   </div>
                   <div>
-                    <h3 className="font-semibold text-sm mb-0">Beat the Clock</h3>
+                    <h3 className="font-semibold text-sm">Beat the Clock</h3>
                     <p className="text-xs text-muted-foreground">Find as many words as possible</p>
                   </div>
                 </div>
@@ -134,18 +129,18 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
 
           {/* Right Column - Example */}
           <div className="w-1/2">
-            <div className="bg-secondary/50 border border-border rounded-xl p-3 h-full hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
-              <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider text-center font-bold">Example</p>
-              <div className="space-y-2">
+            <div className="bg-secondary/50 border border-border rounded-xl p-4 hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
+              <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider text-center font-bold">Example</p>
+              <div className="space-y-2.5">
                 <p className="text-sm text-center">
-                  Syllable: <span className="font-bold bg-accent/30 px-2 py-0.5 rounded text-base">UR</span>
+                  Syllable: <span className="font-bold bg-accent/30 px-2 py-1 rounded text-base">UR</span>
                 </p>
                 <p className="text-xs text-muted-foreground text-center">You can type:</p>
-                <div className="flex flex-wrap justify-center gap-1.5 text-xs font-medium">
-                  <span className="bg-card px-2 py-0.5 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>BURN</span>
-                  <span className="bg-card px-2 py-0.5 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>TURTLE</span>
-                  <span className="bg-card px-2 py-0.5 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.8s" }}>PURPLE</span>
-                  <span className="bg-card px-2 py-0.5 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.9s" }}>HAMBURGER</span>
+                <div className="flex flex-wrap justify-center gap-2 text-xs font-medium">
+                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>BURN</span>
+                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>TURTLE</span>
+                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.8s" }}>PURPLE</span>
+                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.9s" }}>HAMBURGER</span>
                 </div>
               </div>
             </div>
@@ -153,11 +148,11 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         </div>
 
         {/* Start Button - Bottom */}
-        <div className="animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
+        <div className="w-full animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
           <Button
             onClick={onStart}
             size="lg"
-            className="w-full text-lg py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-accent/50 hover:shadow-xl hover:shadow-accent/60"
+            className="w-full text-lg py-5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-accent/50 hover:shadow-xl hover:shadow-accent/60"
           >
             🎮 Start Game
           </Button>
