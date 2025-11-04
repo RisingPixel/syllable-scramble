@@ -211,62 +211,38 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       )}
 
       {/* Portrait Layout */}
-      <div className="w-full max-w-2xl space-y-2 px-3 animate-scale-in landscape:hidden">
+      <div className="w-full max-w-2xl space-y-4 sm:space-y-8 animate-scale-in landscape:hidden">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight mb-1">SYLLABLE</h1>
-          <p className="text-xs sm:text-sm text-muted-foreground">Find words containing the syllable</p>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">SYLLABLE</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">Find words containing the syllable</p>
         </div>
 
         {/* Timer and Score */}
-        <div className="flex justify-between items-center px-3">
-          <div className="text-lg sm:text-xl font-bold">
+        <div className="flex justify-between items-center px-4">
+          <div className="text-xl sm:text-2xl font-bold">
             Score: <span className="text-accent">{totalScore}</span>
           </div>
           <Timer timeLeft={timeLeft} />
         </div>
 
-        {/* Two Column Layout: Target + Found Words */}
-        <div className="grid grid-cols-2 gap-3">
-          {/* Left Column: Target Syllable */}
-          <div className="bg-card border border-border rounded-xl p-3 min-h-[180px] flex flex-col items-center justify-center text-center">
-            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Target</p>
-            <div className="text-3xl font-bold tracking-wider bg-secondary px-3 py-2 rounded-lg">
-              {syllable}
-            </div>
-          </div>
-
-          {/* Right Column: Found Words */}
-          <div className="bg-card border border-border rounded-xl p-3 min-h-[180px] flex flex-col">
-            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Found Words</p>
-            <div className="overflow-y-auto flex-1 space-y-1">
-              {foundWords.length === 0 ? (
-                <p className="text-xs text-muted-foreground text-center py-2">
-                  Start typing...
-                </p>
-              ) : (
-                foundWords.slice().reverse().map((item, index) => (
-                  <div
-                    key={`${item.word}-${index}`}
-                    className="text-sm font-medium uppercase text-foreground"
-                  >
-                    {item.word}
-                  </div>
-                ))
-              )}
-            </div>
+        {/* Syllable Display */}
+        <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 text-center">
+          <p className="text-xs sm:text-sm text-muted-foreground mb-2 uppercase tracking-wider">Find words with</p>
+          <div className="text-4xl sm:text-6xl font-bold tracking-wider bg-secondary px-4 sm:px-6 py-3 sm:py-4 rounded-xl inline-block">
+            {syllable}
           </div>
         </div>
 
         {/* Input Form */}
-        <form onSubmit={handleSubmit} className="space-y-2 w-full">
+        <form onSubmit={handleSubmit} className="space-y-3 sm:space-y-4">
           <Input
             ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="Type a word..."
-            className="text-lg sm:text-xl py-2 sm:py-3 px-3 sm:px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
+            className="text-xl sm:text-2xl py-4 sm:py-6 px-4 sm:px-6 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
             autoComplete="off"
             autoCapitalize="off"
             spellCheck="false"
@@ -274,11 +250,14 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           <Button
             type="submit"
             size="lg"
-            className="w-full text-base sm:text-lg py-2 sm:py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
+            className="w-full text-lg sm:text-xl py-5 sm:py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
           >
             Submit
           </Button>
         </form>
+
+        {/* Word List */}
+        <WordList words={foundWords} syllable={syllable} />
       </div>
 
       {/* Landscape Layout */}
