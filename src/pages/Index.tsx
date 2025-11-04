@@ -58,7 +58,10 @@ const Index = () => {
     setGameState('results');
   };
 
-  const handleRetry = () => {
+  const handleRetry = async () => {
+    if (!isSDKReady || isAdPlaying) return;
+    
+    await commercialBreak();
     setGameResults({ words: [], totalLetters: 0, rejectedWords: [], syllable: '', achievements: [] });
     setGameState('playing');
   };
