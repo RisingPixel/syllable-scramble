@@ -1,36 +1,14 @@
-// Import dictionary directly into bundle (no runtime fetch)
-import wordsRawText from '/public/words_raw.txt?raw';
+import { loadDictionary } from './dictionaryLoader';
+import { Language } from '@/contexts/LanguageContext';
 
-// Load words from the imported dictionary
-let dictionary: Set<string> | null = null;
-
-const loadDictionary = (): Set<string> => {
-  if (dictionary) return dictionary;
-  
-  try {
-    const words = wordsRawText
-      .split('\n')
-      .map(w => w.trim().toLowerCase())
-      .filter(w => w.length >= 2 && w.length <= 15)
-      .filter(w => /^[a-z]+$/.test(w));
-    
-    dictionary = new Set(words);
-    return dictionary;
-  } catch (error) {
-    console.error('Failed to load dictionary:', error);
-    // Fallback to empty set
-    dictionary = new Set();
-    return dictionary;
-  }
-};
-
-// Initialize dictionary immediately
-loadDictionary();
-
-export const validateWord = (word: string, syllable: string): {
+export const validateWord = async (
+  word: string,
+  syllable: string,
+  language: Language
+): Promise<{
   valid: boolean;
   errorType?: 'too_short' | 'missing_syllable' | 'not_in_dictionary';
-} => {
+}> => {
   const normalized = word.toLowerCase().trim();
   const syllableNorm = syllable.toLowerCase();
   
@@ -44,8 +22,8 @@ export const validateWord = (word: string, syllable: string): {
     return { valid: false, errorType: 'missing_syllable' };
   }
   
-  // Check 3: Esiste nel dizionario?
-  const dict = loadDictionary();
+  // Check 3: Esiste nel dizionario della lingua?
+  const dict = await loadDictionary(language);
   if (!dict.has(normalized)) {
     return { valid: false, errorType: 'not_in_dictionary' };
   }
@@ -55,5 +33,5 @@ export const validateWord = (word: string, syllable: string): {
 
 export const isValidSyllable = (syl: string): boolean => {
   if (!syl || syl.length < 2 || syl.length > 6) return false;
-  return /^[a-zA-Z]+$/.test(syl);
+  return /^[a-zA-ZÀ-ÿ]+$/.test(syl);
 };
