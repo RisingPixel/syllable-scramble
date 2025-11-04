@@ -71,30 +71,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
         </div>
 
         {/* Start Button Section */}
-        <div className="space-y-2 animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
-          {/* Visual hint - freccia animata */}
-          <div className="flex justify-center animate-bounce-gentle">
-            <svg 
-              className="w-8 h-8 text-accent animate-wiggle" 
-              fill="none" 
-              stroke="currentColor" 
-              viewBox="0 0 24 24"
-            >
-              <path 
-                strokeLinecap="round" 
-                strokeLinejoin="round" 
-                strokeWidth={3} 
-                d="M19 14l-7 7m0 0l-7-7m7 7V3"
-              />
-            </svg>
-          </div>
-          
-          {/* Hint Text */}
-          <div className="text-center">
-            <p className="text-sm text-accent font-semibold animate-pulse">
-              👇 Ready to play? Tap here!
-            </p>
-          </div>
+        <div className="animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
 
           {/* Start Button */}
           <Button
@@ -174,30 +151,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
           </div>
 
           {/* Start Button Section */}
-          <div className="space-y-2 animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
-            {/* Visual hint - freccia animata */}
-            <div className="flex justify-center animate-bounce-gentle">
-              <svg 
-                className="w-6 h-6 text-accent animate-wiggle" 
-                fill="none" 
-                stroke="currentColor" 
-                viewBox="0 0 24 24"
-              >
-                <path 
-                  strokeLinecap="round" 
-                  strokeLinejoin="round" 
-                  strokeWidth={3} 
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
-            </div>
-            
-            {/* Hint Text */}
-            <div className="text-center">
-              <p className="text-xs text-accent font-semibold animate-pulse">
-                👇 Ready to play? Tap here!
-              </p>
-            </div>
+          <div className="animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
 
             {/* Start Button */}
             <Button
