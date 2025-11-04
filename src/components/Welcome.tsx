@@ -188,57 +188,27 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             </div>
           </div>
 
-          {/* Middle + Right Columns (2/3) */}
-          <div className="w-2/3 flex gap-4">
-          {/* How to Play */}
-          <div className="flex-1">
+          {/* Middle + Right Columns (2/3) - Ultra Compact */}
+          <div className="w-2/3">
             <div className="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
               <h2 className="text-base font-bold text-center mb-3">How to Play</h2>
               
-              <div className="space-y-2.5">
-                {/* Instruction 1 */}
-                <div className="flex gap-3 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.3s" }}>
-                  <div className="bg-accent/20 p-2 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
-                    <Target className="w-4 h-4 text-accent" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">Find Words</h3>
-                    <p className="text-xs text-muted-foreground">Type words that contain the syllable</p>
-                  </div>
-                </div>
-
-                {/* Instruction 2 */}
-                <div className="flex gap-3 items-start animate-fade-in-up-slow" style={{ animationDelay: "0.4s" }}>
-                  <div className="bg-warning/20 p-2 rounded-lg shrink-0 transition-transform duration-300 hover:scale-110">
-                    <Clock className="w-4 h-4 text-warning" />
-                  </div>
-                  <div>
-                    <h3 className="font-semibold text-sm">Beat the Clock</h3>
-                    <p className="text-xs text-muted-foreground">Find as many words as possible</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Example */}
-          <div className="flex-1">
-            <div className="bg-secondary/50 border border-border rounded-xl p-4 hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
-              <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider text-center font-bold">Example</p>
-              <div className="space-y-2.5">
-                <p className="text-sm text-center">
-                  Syllable: <span className="font-bold bg-accent/30 px-2 py-1 rounded text-base">UR</span>
+              <div className="space-y-3 text-xs">
+                <p className="text-center text-muted-foreground">
+                  <Target className="w-3 h-3 inline mr-1 text-accent" />
+                  Type words containing the syllable 
+                  <Clock className="w-3 h-3 inline ml-2 mr-1 text-warning" />
+                  as fast as you can!
                 </p>
-                <p className="text-xs text-muted-foreground text-center">You can type:</p>
-                <div className="flex flex-wrap justify-center gap-2 text-xs font-medium">
-                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>BURN</span>
-                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>TURTLE</span>
-                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.8s" }}>PURPLE</span>
-                  <span className="bg-card px-2 py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-110 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.9s" }}>HAMBURGER</span>
+                
+                <div className="bg-secondary/50 rounded-lg p-2 text-center">
+                  <span className="text-muted-foreground">Example: </span>
+                  <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded">UR</span>
+                  <span className="text-muted-foreground"> → </span>
+                  <span className="font-medium">BURN, TURTLE, PURPLE</span>
                 </div>
               </div>
             </div>
-          </div>
           </div>
         </div>
 
