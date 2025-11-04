@@ -8,12 +8,14 @@ import { useToast } from '@/hooks/use-toast';
 import { usePokiSDK } from '@/hooks/usePokiSDK';
 import { FoundWord, Achievement } from '@/types/achievements';
 import { Loader2 } from 'lucide-react';
+import { loadPlayerProgress, PlayerProgress } from '@/utils/playerProgress';
 
 const Index = () => {
   const { toast } = useToast();
   const { isSDKReady, isAdPlaying, initializeSDK, gameplayStart, gameplayStop, commercialBreak } = usePokiSDK();
   const [gameState, setGameState] = useState<'welcome' | 'playing' | 'results'>('welcome');
   const [challengeSyllable, setChallengeSyllable] = useState<string | null>(null);
+  const [playerProgress, setPlayerProgress] = useState<PlayerProgress>(loadPlayerProgress());
   const [gameResults, setGameResults] = useState<{
     words: FoundWord[];
     totalLetters: number;
@@ -58,12 +60,10 @@ const Index = () => {
     setGameState('results');
   };
 
-  const handleRetry = async () => {
-    if (!isSDKReady || isAdPlaying) return;
-    
-    await commercialBreak();
+  const handleBackToMenu = () => {
+    setPlayerProgress(loadPlayerProgress()); // Refresh progress from storage
     setGameResults({ words: [], totalLetters: 0, rejectedWords: [], syllable: '', achievements: [] });
-    setGameState('playing');
+    setGameState('welcome');
   };
 
   if (!isSDKReady) {
@@ -82,7 +82,11 @@ const Index = () => {
       <AdOverlay isVisible={isAdPlaying} />
       
       {gameState === 'welcome' && (
-        <Welcome onStart={handleStart} challengeSyllable={challengeSyllable} />
+        <Welcome 
+          onStart={handleStart} 
+          challengeSyllable={challengeSyllable}
+          playerProgress={playerProgress}
+        />
       )}
       
       {gameState === 'playing' && (
@@ -102,7 +106,7 @@ const Index = () => {
           rejectedWords={gameResults.rejectedWords}
           syllable={gameResults.syllable}
           achievements={gameResults.achievements}
-          onRetry={handleRetry}
+          onBackToMenu={handleBackToMenu}
         />
       )}
     </>

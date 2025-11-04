@@ -1,12 +1,16 @@
 import { Button } from "@/components/ui/button";
-import { Clock, Target } from "lucide-react";
+import { Clock, Target, Trophy, Zap } from "lucide-react";
+import { PlayerProgress } from "@/utils/playerProgress";
 
 interface WelcomeProps {
   onStart: () => void;
   challengeSyllable?: string | null;
+  playerProgress: PlayerProgress;
 }
 
-const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
+const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) => {
+  const xpPercentage = (playerProgress.experiencePoints / playerProgress.experienceToNextLevel) * 100;
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 bg-background">
       {/* Portrait Layout */}
@@ -22,6 +26,48 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
               🎯 Challenge Mode: {challengeSyllable}
             </div>
           )}
+        </div>
+
+        {/* Player Stats Card */}
+        <div className="bg-card border border-accent/50 rounded-xl p-4 sm:p-5 animate-fade-in-up-slow" style={{ animationDelay: "0.1s" }}>
+          <div className="flex items-center gap-4 mb-3">
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30">
+              <span className="text-2xl sm:text-3xl font-bold text-accent-foreground">{playerProgress.level}</span>
+            </div>
+            <div className="flex-1">
+              <h3 className="font-bold text-base sm:text-lg flex items-center gap-2">
+                <Trophy className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
+                Level {playerProgress.level} Player
+              </h3>
+              <p className="text-xs sm:text-sm text-muted-foreground">
+                {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+              </p>
+            </div>
+          </div>
+          
+          {/* XP Bar */}
+          <div className="w-full bg-secondary rounded-full h-2.5 sm:h-3 mb-3 overflow-hidden">
+            <div 
+              className="bg-gradient-to-r from-accent to-accent/80 h-full transition-all duration-500 shadow-sm shadow-accent/50"
+              style={{ width: `${xpPercentage}%` }}
+            />
+          </div>
+          
+          {/* Stats Grid */}
+          <div className="grid grid-cols-3 gap-2 text-center">
+            <div className="bg-secondary/50 rounded-lg p-2 sm:p-3">
+              <p className="text-xl sm:text-2xl font-bold text-accent">{playerProgress.totalScore.toLocaleString()}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground uppercase">Total Score</p>
+            </div>
+            <div className="bg-secondary/50 rounded-lg p-2 sm:p-3">
+              <p className="text-xl sm:text-2xl font-bold text-accent">{playerProgress.totalWordsFound}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground uppercase">Words Found</p>
+            </div>
+            <div className="bg-secondary/50 rounded-lg p-2 sm:p-3">
+              <p className="text-xl sm:text-2xl font-bold text-accent">{playerProgress.gamesPlayed}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground uppercase">Games</p>
+            </div>
+          </div>
         </div>
 
         {/* Instructions Card */}
@@ -85,7 +131,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
       </div>
 
       {/* Landscape Layout */}
-      <div className="hidden landscape:flex landscape:flex-col w-full max-w-5xl h-screen justify-center items-center px-6 gap-3">
+      <div className="hidden landscape:flex landscape:flex-col w-full max-w-6xl h-screen justify-center items-center px-6 gap-3">
         {/* Header - Centered Top */}
         <div className="text-center animate-fade-in">
           <h1 className="text-3xl font-bold tracking-tight mb-1 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
@@ -94,10 +140,58 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
           <p className="text-sm text-muted-foreground">A fast-paced word game</p>
         </div>
 
-        {/* Two Columns - Middle */}
+        {/* Three Columns - Middle */}
         <div className="flex gap-4 w-full">
-          {/* Left Column - How to Play */}
-          <div className="w-1/2">
+          {/* Left Column - Player Stats (1/3) */}
+          <div className="w-1/3">
+            <div className="bg-card border border-accent/50 rounded-xl p-4 animate-fade-in-up-slow" style={{ animationDelay: "0.1s" }}>
+              <div className="flex items-center gap-3 mb-3">
+                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30">
+                  <span className="text-xl font-bold text-accent-foreground">{playerProgress.level}</span>
+                </div>
+                <div className="flex-1 min-w-0">
+                  <h3 className="font-bold text-sm flex items-center gap-1.5 truncate">
+                    <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+                    <span className="truncate">Level {playerProgress.level}</span>
+                  </h3>
+                  <p className="text-xs text-muted-foreground truncate">
+                    {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+                  </p>
+                </div>
+              </div>
+              
+              {/* XP Bar */}
+              <div className="w-full bg-secondary rounded-full h-2 mb-3 overflow-hidden">
+                <div 
+                  className="bg-gradient-to-r from-accent to-accent/80 h-full transition-all duration-500 shadow-sm shadow-accent/50"
+                  style={{ width: `${xpPercentage}%` }}
+                />
+              </div>
+              
+              {/* Stats Grid */}
+              <div className="space-y-2">
+                <div className="bg-secondary/50 rounded-lg p-2 text-center">
+                  <p className="text-lg font-bold text-accent">{playerProgress.totalScore.toLocaleString()}</p>
+                  <p className="text-[10px] text-muted-foreground uppercase">Total Score</p>
+                </div>
+                <div className="grid grid-cols-2 gap-2">
+                  <div className="bg-secondary/50 rounded-lg p-2 text-center">
+                    <p className="text-base font-bold text-accent">{playerProgress.totalWordsFound}</p>
+                    <p className="text-[9px] text-muted-foreground uppercase">Words</p>
+                  </div>
+                  <div className="bg-secondary/50 rounded-lg p-2 text-center">
+                    <p className="text-base font-bold text-accent">{playerProgress.gamesPlayed}</p>
+                    <p className="text-[9px] text-muted-foreground uppercase">Games</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Middle + Right Columns (2/3) */}
+          <div className="w-2/3 flex gap-4">
+          {/* How to Play */}
+          <div className="flex-1">
             <div className="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
               <h2 className="text-base font-bold text-center mb-3">How to Play</h2>
               
@@ -127,8 +221,8 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
             </div>
           </div>
 
-          {/* Right Column - Example */}
-          <div className="w-1/2">
+          {/* Example */}
+          <div className="flex-1">
             <div className="bg-secondary/50 border border-border rounded-xl p-4 hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
               <p className="text-xs text-muted-foreground mb-3 uppercase tracking-wider text-center font-bold">Example</p>
               <div className="space-y-2.5">
@@ -144,6 +238,7 @@ const Welcome = ({ onStart, challengeSyllable }: WelcomeProps) => {
                 </div>
               </div>
             </div>
+          </div>
           </div>
         </div>
 

@@ -1,20 +1,26 @@
 import { Button } from "@/components/ui/button";
-import { Star, Share2 } from "lucide-react";
+import { Star, Share2, Home, Sparkles } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import Confetti from "./Confetti";
 import { Achievement, FoundWord } from "@/types/achievements";
+import { addGameResults } from "@/utils/playerProgress";
+import { useState, useEffect } from "react";
 
 interface ResultsProps {
   words: FoundWord[];
   totalLetters: number;
   rejectedWords: string[];
   syllable: string;
-  onRetry: () => void;
+  onBackToMenu: () => void;
   achievements?: Achievement[];
 }
 
-const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achievements = [] }: ResultsProps) => {
+const Results = ({ words, totalLetters, rejectedWords, syllable, onBackToMenu, achievements = [] }: ResultsProps) => {
   const { toast } = useToast();
+  const [showLevelUp, setShowLevelUp] = useState(false);
+  const [newLevel, setNewLevel] = useState(0);
+  const [xpGained, setXpGained] = useState(0);
+  
   const totalScore = words.reduce((sum, w) => sum + w.score, 0);
 
   // Calculate achievement bonus
@@ -34,6 +40,19 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
     rejectedWords.length > 0
       ? rejectedWords.reduce((longest, word) => (word.length > longest.length ? word : longest), rejectedWords[0])
       : null;
+
+  // Update player progress on mount
+  useEffect(() => {
+    const calculatedXP = finalScore + (words.length * 10);
+    setXpGained(calculatedXP);
+    
+    const result = addGameResults(finalScore, words.length);
+    
+    if (result.leveledUp) {
+      setNewLevel(result.newLevel);
+      setShowLevelUp(true);
+    }
+  }, []); // Empty deps - run only once on mount
 
   const handleShare = async () => {
     const challengeUrl = `${window.location.origin}${window.location.pathname}?syl=${syllable.toUpperCase()}`;
@@ -67,6 +86,28 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-background">
+      {/* Level Up Popup */}
+      {showLevelUp && (
+        <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fade-in">
+          <div className="bg-card border-4 border-accent rounded-2xl p-8 text-center animate-scale-in max-w-md mx-4">
+            <Sparkles className="w-16 h-16 text-accent mx-auto mb-4 animate-pulse" />
+            <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-accent via-yellow-400 to-accent bg-clip-text text-transparent">
+              LEVEL UP!
+            </h2>
+            <p className="text-7xl font-bold text-accent mb-4 animate-pulse">{newLevel}</p>
+            <p className="text-muted-foreground mb-2">You've reached level {newLevel}!</p>
+            <p className="text-sm text-muted-foreground/70 mb-6">+{xpGained} XP gained this game</p>
+            <Button 
+              onClick={() => setShowLevelUp(false)} 
+              className="bg-accent hover:bg-accent/90 text-accent-foreground font-bold px-8"
+              size="lg"
+            >
+              Continue
+            </Button>
+          </div>
+        </div>
+      )}
+
       {/* Confetti for high scores */}
       {finalScore >= 500 && <Confetti count={finalScore >= 1000 ? 100 : 50} />}
 
@@ -140,11 +181,12 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
             Share Results
           </Button>
           <Button
-            onClick={onRetry}
+            onClick={onBackToMenu}
             size="lg"
             className="w-full max-w-sm text-lg py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider"
           >
-            Play Again
+            <Home className="w-5 h-5 mr-2" />
+            Back to Menu
           </Button>
         </div>
       </div>
@@ -220,11 +262,12 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onRetry, achiev
               Share
             </Button>
             <Button
-              onClick={onRetry}
+              onClick={onBackToMenu}
               size="lg"
               className="flex-1 text-sm py-4 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider"
             >
-              Play Again
+              <Home className="w-4 h-4 mr-1" />
+              Menu
             </Button>
           </div>
         </div>
