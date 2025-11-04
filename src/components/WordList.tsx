@@ -11,9 +11,10 @@ interface WordListProps {
   words: FoundWord[];
   syllable: string;
   isLandscape?: boolean;
+  hideHeader?: boolean;
 }
 
-const WordList = ({ words, syllable, isLandscape = false }: WordListProps) => {
+const WordList = ({ words, syllable, isLandscape = false, hideHeader = false }: WordListProps) => {
   const [showScore, setShowScore] = useState<string | null>(null);
 
   useEffect(() => {
@@ -62,20 +63,22 @@ const WordList = ({ words, syllable, isLandscape = false }: WordListProps) => {
 
   return (
     <div className={cn("w-full space-y-2", isLandscape ? "" : "max-w-md")}>
-      <div className="flex justify-between items-center mb-2">
-        <h3 className={cn(
-          "font-medium text-muted-foreground uppercase tracking-wider",
-          isLandscape ? "text-xs" : "text-sm"
-        )}>
-          Found Words
-        </h3>
-        <span className={cn(
-          "text-muted-foreground",
-          isLandscape ? "text-xs" : "text-sm"
-        )}>
-          {words.length} {words.length === 1 ? 'word' : 'words'}
-        </span>
-      </div>
+      {!hideHeader && (
+        <div className="flex justify-between items-center mb-2">
+          <h3 className={cn(
+            "font-medium text-muted-foreground uppercase tracking-wider",
+            isLandscape ? "text-xs" : "text-sm"
+          )}>
+            Found Words
+          </h3>
+          <span className={cn(
+            "text-muted-foreground",
+            isLandscape ? "text-xs" : "text-sm"
+          )}>
+            {words.length} {words.length === 1 ? 'word' : 'words'}
+          </span>
+        </div>
+      )}
       <div className={cn(
         "overflow-y-auto space-y-1 bg-card rounded-lg p-3 border border-border",
         isLandscape ? "max-h-[70vh]" : "max-h-48"

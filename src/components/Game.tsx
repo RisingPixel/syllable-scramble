@@ -298,7 +298,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
               <p className="text-[10px] text-muted-foreground">{foundWords.length} words</p>
             </div>
             <div className="flex-1 overflow-y-auto">
-              <WordList words={foundWords} syllable={syllable} isLandscape />
+              <WordList words={foundWords} syllable={syllable} isLandscape hideHeader />
             </div>
           </div>
         </div>
