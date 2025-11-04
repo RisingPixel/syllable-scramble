@@ -1,14 +1,14 @@
-// Load words from the open-source dictionary
+// Import dictionary directly into bundle (no runtime fetch)
+import wordsRawText from '/public/words_raw.txt?raw';
+
+// Load words from the imported dictionary
 let dictionary: Set<string> | null = null;
 
-const loadDictionary = async (): Promise<Set<string>> => {
+const loadDictionary = (): Set<string> => {
   if (dictionary) return dictionary;
   
   try {
-    const response = await fetch('/words_raw.txt');
-    const text = await response.text();
-    
-    const words = text
+    const words = wordsRawText
       .split('\n')
       .map(w => w.trim().toLowerCase())
       .filter(w => w.length >= 2 && w.length <= 15)
@@ -27,10 +27,10 @@ const loadDictionary = async (): Promise<Set<string>> => {
 // Initialize dictionary immediately
 loadDictionary();
 
-export const validateWord = async (word: string, syllable: string): Promise<{
+export const validateWord = (word: string, syllable: string): {
   valid: boolean;
   errorType?: 'too_short' | 'missing_syllable' | 'not_in_dictionary';
-}> => {
+} => {
   const normalized = word.toLowerCase().trim();
   const syllableNorm = syllable.toLowerCase();
   
@@ -45,7 +45,7 @@ export const validateWord = async (word: string, syllable: string): Promise<{
   }
   
   // Check 3: Esiste nel dizionario?
-  const dict = await loadDictionary();
+  const dict = loadDictionary();
   if (!dict.has(normalized)) {
     return { valid: false, errorType: 'not_in_dictionary' };
   }
