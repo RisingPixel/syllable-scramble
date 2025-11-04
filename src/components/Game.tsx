@@ -262,32 +262,37 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
 
       {/* Landscape Layout */}
       <div className="hidden landscape:flex landscape:flex-col w-full h-screen overflow-hidden animate-scale-in p-2 gap-2">
-        {/* Header centrato */}
-        <div className="text-center">
-          <h1 className="text-2xl font-bold tracking-tight">SYLLABLE</h1>
-          <p className="text-[10px] text-muted-foreground">Find words with the syllable</p>
-        </div>
-
-        {/* Score e Timer allineati */}
-        <div className="flex justify-between items-center px-2">
+        {/* Riga superiore: Score + SYLLABLE + Timer */}
+        <div className="grid grid-cols-3 items-center px-2">
+          {/* Score a sinistra */}
           <div className="text-base font-bold">
             Score: <span className="text-accent">{totalScore}</span>
           </div>
-          <Timer timeLeft={timeLeft} />
+          
+          {/* SYLLABLE al centro */}
+          <div className="text-center">
+            <h1 className="text-2xl font-bold tracking-tight">SYLLABLE</h1>
+            <p className="text-[10px] text-muted-foreground">Find words with the syllable</p>
+          </div>
+          
+          {/* Timer a destra */}
+          <div className="flex justify-end">
+            <Timer timeLeft={timeLeft} />
+          </div>
         </div>
 
-        {/* Due colonne 50%/50% */}
-        <div className="grid grid-cols-2 gap-2 flex-1">
-          {/* Colonna sinistra - TARGET */}
-          <div className="bg-card border border-border rounded-lg p-3 flex flex-col items-center justify-center">
+        {/* Due colonne con flex-1 per occupare tutto lo spazio */}
+        <div className="grid grid-cols-2 gap-2 flex-1 overflow-hidden">
+          {/* Card TARGET - sinistra */}
+          <div className="bg-card border border-border rounded-lg p-3 flex flex-col items-center justify-center h-full">
             <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">TARGET</p>
             <div className="text-3xl font-bold tracking-wider bg-secondary px-4 py-2 rounded-lg">
               {syllable}
             </div>
           </div>
           
-          {/* Colonna destra - FOUND WORDS */}
-          <div className="bg-card border border-border rounded-lg p-3 flex flex-col">
+          {/* Card FOUND WORDS - destra */}
+          <div className="bg-card border border-border rounded-lg p-3 flex flex-col h-full">
             <div className="flex justify-between items-center mb-1">
               <p className="text-[10px] text-muted-foreground uppercase tracking-wider">FOUND WORDS</p>
               <p className="text-[10px] text-muted-foreground">{foundWords.length} words</p>
@@ -298,7 +303,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           </div>
         </div>
 
-        {/* Input e Bottone full-width */}
+        {/* Form in basso */}
         <form onSubmit={handleSubmit} className="space-y-1 w-full">
           <Input
             ref={inputRef}
