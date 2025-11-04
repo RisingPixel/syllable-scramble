@@ -261,36 +261,36 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       </div>
 
       {/* Landscape Layout */}
-      <div className="hidden landscape:flex landscape:flex-col w-full h-screen overflow-hidden animate-scale-in p-4 gap-4">
+      <div className="hidden landscape:flex landscape:flex-col w-full h-screen overflow-hidden animate-scale-in p-2 gap-2">
         {/* Header centrato */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold tracking-tight mb-1">SYLLABLE</h1>
-          <p className="text-xs text-muted-foreground">Find words with the syllable</p>
+          <h1 className="text-2xl font-bold tracking-tight">SYLLABLE</h1>
+          <p className="text-[10px] text-muted-foreground">Find words with the syllable</p>
         </div>
 
         {/* Score e Timer allineati */}
-        <div className="flex justify-between items-center px-4">
-          <div className="text-lg font-bold">
+        <div className="flex justify-between items-center px-2">
+          <div className="text-base font-bold">
             Score: <span className="text-accent">{totalScore}</span>
           </div>
           <Timer timeLeft={timeLeft} />
         </div>
 
         {/* Due colonne 50%/50% */}
-        <div className="grid grid-cols-2 gap-4 flex-1">
+        <div className="grid grid-cols-2 gap-2 flex-1">
           {/* Colonna sinistra - TARGET */}
-          <div className="bg-card border border-border rounded-xl p-6 flex flex-col items-center justify-center">
-            <p className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">TARGET</p>
-            <div className="text-5xl font-bold tracking-wider bg-secondary px-6 py-3 rounded-lg">
+          <div className="bg-card border border-border rounded-lg p-3 flex flex-col items-center justify-center">
+            <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">TARGET</p>
+            <div className="text-3xl font-bold tracking-wider bg-secondary px-4 py-2 rounded-lg">
               {syllable}
             </div>
           </div>
           
           {/* Colonna destra - FOUND WORDS */}
-          <div className="bg-card border border-border rounded-xl p-4 flex flex-col">
-            <div className="flex justify-between items-center mb-2">
-              <p className="text-xs text-muted-foreground uppercase tracking-wider">FOUND WORDS</p>
-              <p className="text-xs text-muted-foreground">{foundWords.length} words</p>
+          <div className="bg-card border border-border rounded-lg p-3 flex flex-col">
+            <div className="flex justify-between items-center mb-1">
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">FOUND WORDS</p>
+              <p className="text-[10px] text-muted-foreground">{foundWords.length} words</p>
             </div>
             <div className="flex-1 overflow-y-auto">
               <WordList words={foundWords} syllable={syllable} isLandscape />
@@ -299,14 +299,14 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
         </div>
 
         {/* Input e Bottone full-width */}
-        <form onSubmit={handleSubmit} className="space-y-2 w-full">
+        <form onSubmit={handleSubmit} className="space-y-1 w-full">
           <Input
             ref={inputRef}
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             placeholder="TYPE A WORD..."
-            className="text-lg py-3 px-4 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
+            className="text-base py-2 px-3 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
             autoComplete="off"
             autoCapitalize="off"
             spellCheck="false"
@@ -314,7 +314,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           <Button
             type="submit"
             size="lg"
-            className="w-full text-base py-3 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
+            className="w-full text-sm py-2 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
           >
             Submit
           </Button>
