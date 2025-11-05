@@ -9,9 +9,11 @@ import { usePokiSDK } from '@/hooks/usePokiSDK';
 import { FoundWord, Achievement } from '@/types/achievements';
 import { Loader2 } from 'lucide-react';
 import { loadPlayerProgress, PlayerProgress } from '@/utils/playerProgress';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Index = () => {
   const { toast } = useToast();
+  const { language } = useLanguage();
   const { isSDKReady, isAdPlaying, initializeSDK, gameplayStart, gameplayStop, commercialBreak } = usePokiSDK();
   const [gameState, setGameState] = useState<'welcome' | 'playing' | 'results'>('welcome');
   const [challengeSyllable, setChallengeSyllable] = useState<string | null>(null);
@@ -43,7 +45,7 @@ const Index = () => {
           description: "The syllable in the URL is invalid. Starting with a random one.",
           variant: "destructive",
         });
-        setChallengeSyllable(getRandomSyllable());
+        setChallengeSyllable(getRandomSyllable(language));
       }
     }
   }, [toast]);

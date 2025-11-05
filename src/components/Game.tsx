@@ -11,6 +11,7 @@ import ScorePopup from "./ScorePopup";
 import CenteredPopup from "./CenteredPopup";
 import { useToast } from "@/hooks/use-toast";
 import { FoundWord, ComboState, GameData, ScoreBreakdown, Achievement } from "@/types/achievements";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface GameProps {
   onGameEnd: (
@@ -28,7 +29,8 @@ interface GameProps {
 
 const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdPlaying }: GameProps) => {
   const { toast } = useToast();
-  const [syllable] = useState(challengeSyllable || getRandomSyllable());
+  const { language } = useLanguage();
+  const [syllable] = useState(challengeSyllable || getRandomSyllable(language));
   const [inputValue, setInputValue] = useState("");
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
   const [rejectedWords, setRejectedWords] = useState<string[]>([]);
@@ -108,7 +110,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     }
 
     // Validate word
-    const validation = await validateWord(trimmedInput, syllable);
+    const validation = await validateWord(trimmedInput, syllable, language);
     const now = Date.now();
     const timestamp = now - startTimeRef.current;
 
