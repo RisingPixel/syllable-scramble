@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Clock, Target, Trophy, Zap } from "lucide-react";
 import { PlayerProgress } from "@/utils/playerProgress";
+import { LanguageSelector } from "@/components/LanguageSelector";
 
 interface WelcomeProps {
   onStart: () => void;
@@ -12,7 +13,12 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
   const xpPercentage = (playerProgress.experiencePoints / playerProgress.experienceToNextLevel) * 100;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 bg-background">
+    <div className="min-h-screen flex flex-col items-center justify-start sm:justify-center p-4 sm:p-6 py-6 bg-background relative">
+      {/* Language Selector - Fixed Top Right */}
+      <div className="fixed top-4 right-4 z-50">
+        <LanguageSelector />
+      </div>
+
       {/* Portrait Layout */}
       <div className="w-full max-w-2xl flex flex-col gap-2.5 sm:gap-3 my-auto landscape:hidden">
         {/* Header */}
