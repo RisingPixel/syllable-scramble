@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Clock, Target, Trophy, Zap } from "lucide-react";
+import { Clock, Target, Trophy } from "lucide-react";
 import { PlayerProgress } from "@/utils/playerProgress";
 import { LanguageSelector } from "@/components/LanguageSelector";
 import { useLanguage } from "@/contexts/LanguageContext";

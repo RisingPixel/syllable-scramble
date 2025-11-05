@@ -31,7 +31,3 @@ export const validateWord = async (
   return { valid: true };
 };
 
-export const isValidSyllable = (syl: string): boolean => {
-  if (!syl || syl.length < 2 || syl.length > 6) return false;
-  return /^[a-zA-ZÀ-ÿ]+$/.test(syl);
-};
