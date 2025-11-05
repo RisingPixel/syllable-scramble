@@ -34,45 +34,31 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
           )}
         </div>
 
-        {/* Player Stats Card */}
-        <div className="bg-card border border-accent/50 rounded-xl p-3 sm:p-4 animate-fade-in-up-slow" style={{ animationDelay: "0.1s" }}>
-          <div className="flex items-center gap-3 mb-2">
-            <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30">
-              <span className="text-xl sm:text-2xl font-bold text-accent-foreground">{playerProgress.level}</span>
-            </div>
-            <div className="flex-1">
-              <h3 className="font-bold text-sm sm:text-base flex items-center gap-2">
-                <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-accent" />
-                Level {playerProgress.level} Player
-              </h3>
-              <p className="text-[10px] sm:text-xs text-muted-foreground">
-                {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
-              </p>
-            </div>
+        {/* Compact Player Stats Bar */}
+        <div className="bg-card border border-border rounded-xl px-4 py-3 animate-fade-in-up-slow flex items-center gap-3" style={{ animationDelay: "0.1s" }}>
+          {/* Level Badge */}
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30 flex-shrink-0">
+            <span className="text-sm font-bold text-accent-foreground">{playerProgress.level}</span>
           </div>
           
-          {/* XP Bar */}
-          <div className="w-full bg-secondary rounded-full h-2 mb-2 overflow-hidden">
-            <div 
-              className="bg-gradient-to-r from-accent to-accent/80 h-full transition-all duration-500 shadow-sm shadow-accent/50"
-              style={{ width: `${xpPercentage}%` }}
-            />
-          </div>
-          
-          {/* Stats Grid */}
-          <div className="grid grid-cols-3 gap-1.5 sm:gap-2 text-center">
-            <div className="bg-secondary/50 rounded-lg p-1.5 sm:p-2">
-              <p className="text-lg sm:text-xl font-bold text-accent">{playerProgress.totalScore.toLocaleString()}</p>
-              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase">Total Score</p>
+          {/* Stats Text - All Inline */}
+          <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground flex-wrap">
+            <div className="flex items-center gap-1.5">
+              <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+              <span className="font-semibold text-foreground">Level {playerProgress.level}</span>
             </div>
-            <div className="bg-secondary/50 rounded-lg p-1.5 sm:p-2">
-              <p className="text-lg sm:text-xl font-bold text-accent">{playerProgress.totalWordsFound}</p>
-              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase">Words Found</p>
-            </div>
-            <div className="bg-secondary/50 rounded-lg p-1.5 sm:p-2">
-              <p className="text-lg sm:text-xl font-bold text-accent">{playerProgress.gamesPlayed}</p>
-              <p className="text-[9px] sm:text-[10px] text-muted-foreground uppercase">Games</p>
-            </div>
+            
+            <span className="text-muted-foreground/50 hidden sm:inline">•</span>
+            
+            <span className="whitespace-nowrap">
+              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+            </span>
+            
+            <span className="text-muted-foreground/50 hidden sm:inline">•</span>
+            
+            <span className="whitespace-nowrap">
+              {playerProgress.totalWordsFound} words in {playerProgress.gamesPlayed} rounds
+            </span>
           </div>
         </div>
 
@@ -146,56 +132,29 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
           <p className="text-sm text-muted-foreground">A fast-paced word game</p>
         </div>
 
-        {/* Three Columns - Middle */}
-        <div className="flex gap-4 w-full">
-          {/* Left Column - Player Stats (1/3) */}
-          <div className="w-1/3">
-            <div className="bg-card border border-accent/50 rounded-xl p-4 animate-fade-in-up-slow" style={{ animationDelay: "0.1s" }}>
-              <div className="flex items-center gap-3 mb-3">
-                <div className="w-12 h-12 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30">
-                  <span className="text-xl font-bold text-accent-foreground">{playerProgress.level}</span>
-                </div>
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-bold text-sm flex items-center gap-1.5 truncate">
-                    <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
-                    <span className="truncate">Level {playerProgress.level}</span>
-                  </h3>
-                  <p className="text-xs text-muted-foreground truncate">
-                    {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
-                  </p>
-                </div>
-              </div>
-              
-              {/* XP Bar */}
-              <div className="w-full bg-secondary rounded-full h-2 mb-3 overflow-hidden">
-                <div 
-                  className="bg-gradient-to-r from-accent to-accent/80 h-full transition-all duration-500 shadow-sm shadow-accent/50"
-                  style={{ width: `${xpPercentage}%` }}
-                />
-              </div>
-              
-              {/* Stats Grid */}
-              <div className="space-y-2">
-                <div className="bg-secondary/50 rounded-lg p-2 text-center">
-                  <p className="text-lg font-bold text-accent">{playerProgress.totalScore.toLocaleString()}</p>
-                  <p className="text-[10px] text-muted-foreground uppercase">Total Score</p>
-                </div>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="bg-secondary/50 rounded-lg p-2 text-center">
-                    <p className="text-base font-bold text-accent">{playerProgress.totalWordsFound}</p>
-                    <p className="text-[9px] text-muted-foreground uppercase">Words</p>
-                  </div>
-                  <div className="bg-secondary/50 rounded-lg p-2 text-center">
-                    <p className="text-base font-bold text-accent">{playerProgress.gamesPlayed}</p>
-                    <p className="text-[9px] text-muted-foreground uppercase">Games</p>
-                  </div>
-                </div>
-              </div>
-            </div>
+        {/* Compact Stats Bar */}
+        <div className="w-full bg-card border border-border rounded-xl px-4 py-3 flex items-center justify-center gap-3 animate-fade-in-up-slow" style={{ animationDelay: "0.1s" }}>
+          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-accent to-accent/60 flex items-center justify-center shadow-lg shadow-accent/30 flex-shrink-0">
+            <span className="text-sm font-bold text-accent-foreground">{playerProgress.level}</span>
           </div>
+          <div className="flex items-center gap-3 text-sm text-muted-foreground">
+            <div className="flex items-center gap-1.5">
+              <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
+              <span className="font-semibold text-foreground">Level {playerProgress.level}</span>
+            </div>
+            <span className="text-muted-foreground/50">•</span>
+            <span className="whitespace-nowrap">
+              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+            </span>
+            <span className="text-muted-foreground/50">•</span>
+            <span className="whitespace-nowrap">
+              {playerProgress.totalWordsFound} words in {playerProgress.gamesPlayed} rounds
+            </span>
+          </div>
+        </div>
 
-          {/* Middle + Right Columns (2/3) - Ultra Compact */}
-          <div className="w-2/3">
+        {/* Instructions Card - Full Width */}
+        <div className="w-full">
             <div className="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
               <h2 className="text-base font-bold text-center mb-3">How to Play</h2>
               
@@ -216,7 +175,6 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
               </div>
             </div>
           </div>
-        </div>
 
         {/* Start Button - Bottom */}
         <div className="w-full animate-fade-in-up-slow" style={{ animationDelay: "1s" }}>
