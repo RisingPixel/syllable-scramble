@@ -45,10 +45,13 @@ self.addEventListener('fetch', (event) => {
             // Only cache successful responses
             if (response && response.status === 200) {
               cache.put(event.request, response.clone());
+              return response;
             }
+            // If not 200, don't cache and return the response
             return response;
           }).catch(error => {
             console.error(`❌ Failed to fetch dictionary: ${url.pathname}`, error);
+            // Re-throw to trigger error handling in the app
             throw error;
           });
         });

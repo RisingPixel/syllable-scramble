@@ -11,6 +11,8 @@ window.addEventListener('keydown', (ev) => {
 });
 
 // Register Service Worker for dictionary caching
+// ⚠️ TEMPORANEAMENTE DISABILITATO PER DEBUG
+/*
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
     navigator.serviceWorker
@@ -19,6 +21,7 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('❌ Service Worker registration failed:', err));
   });
 }
+*/
 
 createRoot(document.getElementById("root")!).render(
   <LanguageProvider>
