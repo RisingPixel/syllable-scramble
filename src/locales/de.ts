@@ -33,6 +33,8 @@ const de: Translations = {
     typeWord: 'Geben Sie ein Wort ein...',
     target: 'ZIEL',
     foundWords: 'GEFUNDENE WÖRTER',
+    loadingDictionary: 'Wörterbuch wird geladen...',
+    loadingMessage: 'Ihr Spiel wird vorbereitet...',
     errors: {
       tooShort: 'Zu kurz!',
       alreadyFound: 'Bereits gefunden!',

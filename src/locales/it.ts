@@ -33,6 +33,8 @@ const it: Translations = {
     typeWord: 'Scrivi una parola...',
     target: 'OBIETTIVO',
     foundWords: 'PAROLE TROVATE',
+    loadingDictionary: 'Caricamento dizionario...',
+    loadingMessage: 'Preparazione del gioco...',
     errors: {
       tooShort: 'Troppo corta!',
       alreadyFound: 'Già trovata!',

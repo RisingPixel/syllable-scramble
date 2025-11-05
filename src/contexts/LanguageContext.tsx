@@ -1,4 +1,5 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { preloadDictionary } from '@/utils/dictionaryLoader';
 
 export type Language = 'en' | 'fr' | 'it' | 'de' | 'es';
 
@@ -32,6 +33,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
     localStorage.setItem('game-language', lang);
+    
+    // Preload dizionario della nuova lingua in background
+    preloadDictionary(lang);
   };
 
   // Lazy load translations
@@ -41,6 +45,9 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     import(`../locales/${language}.ts`).then((module) => {
       setTranslations(module.default);
     });
+    
+    // Preload dizionario della lingua corrente
+    preloadDictionary(language);
   }, [language]);
 
   const t = (key: string, params?: Record<string, string | number>): string => {

@@ -12,6 +12,7 @@ import CenteredPopup from "./CenteredPopup";
 import { useToast } from "@/hooks/use-toast";
 import { FoundWord, ComboState, GameData, ScoreBreakdown, Achievement } from "@/types/achievements";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { isDictionaryLoaded, onLoadingStateChange, preloadDictionary } from "@/utils/dictionaryLoader";
 
 interface GameProps {
   onGameEnd: (
@@ -30,6 +31,10 @@ interface GameProps {
 const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdPlaying }: GameProps) => {
   const { toast } = useToast();
   const { language, t } = useLanguage();
+  
+  // Dictionary loading state
+  const [isDictReady, setIsDictReady] = useState(isDictionaryLoaded(language));
+  
   const [syllable] = useState(challengeSyllable || getRandomSyllable(language));
   const [inputValue, setInputValue] = useState("");
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
@@ -46,16 +51,39 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   const inputRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<number>(Date.now());
 
+  // Assicurati che il dizionario sia caricato all'avvio del gioco
   useEffect(() => {
-    gameplayStart();
-    inputRef.current?.focus();
+    if (!isDictionaryLoaded(language)) {
+      console.log(`⏳ Dictionary not loaded yet, preloading ${language}...`);
+      preloadDictionary(language);
+    }
+    
+    // Listen for loading state changes
+    const unsubscribe = onLoadingStateChange((lang, state) => {
+      if (lang === language && state === 'loaded') {
+        setIsDictReady(true);
+      }
+    });
+    
+    return unsubscribe;
+  }, [language]);
+
+  useEffect(() => {
+    // Solo se il dizionario è pronto, avvia il gioco
+    if (isDictReady) {
+      gameplayStart();
+      inputRef.current?.focus();
+    }
     
     return () => {
       gameplayStop();
     };
-  }, [gameplayStart, gameplayStop]);
+  }, [isDictReady, gameplayStart, gameplayStop]);
 
   useEffect(() => {
+    // Timer parte solo se dizionario pronto
+    if (!isDictReady) return;
+    
     const interval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
       const remaining = Math.max(0, 60 - elapsed);
@@ -68,7 +96,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     }, 100);
 
     return () => clearInterval(interval);
-  }, []);
+  }, [isDictReady]);
 
   const handleTimeUp = () => {
     gameplayStop();
@@ -96,7 +124,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    if (isAdPlaying) return;
+    if (isAdPlaying || !isDictReady) return;
 
     const trimmedInput = inputValue.trim();
     if (!trimmedInput) return;
@@ -197,6 +225,24 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   };
 
   const totalScore = foundWords.reduce((sum, w) => sum + w.score, 0);
+
+  // Loading Screen se dizionario non pronto
+  if (!isDictReady) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+        <div className="text-center space-y-4 animate-pulse">
+          <div className="text-6xl">📖</div>
+          <h2 className="text-2xl font-bold">{t('game.loadingDictionary')}</h2>
+          <p className="text-muted-foreground">{t('game.loadingMessage')}</p>
+          <div className="flex justify-center gap-2">
+            <div className="w-3 h-3 bg-accent rounded-full animate-bounce" style={{ animationDelay: '0ms' }}></div>
+            <div className="w-3 h-3 bg-accent rounded-full animate-bounce" style={{ animationDelay: '150ms' }}></div>
+            <div className="w-3 h-3 bg-accent rounded-full animate-bounce" style={{ animationDelay: '300ms' }}></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 bg-background">

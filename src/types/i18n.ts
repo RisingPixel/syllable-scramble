@@ -31,6 +31,8 @@ export interface Translations {
     typeWord: string;
     target: string;
     foundWords: string;
+    loadingDictionary: string;
+    loadingMessage: string;
     errors: {
       tooShort: string;
       alreadyFound: string;

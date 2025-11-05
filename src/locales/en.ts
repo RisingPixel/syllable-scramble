@@ -33,6 +33,8 @@ const en: Translations = {
     typeWord: 'Type a word...',
     target: 'TARGET',
     foundWords: 'FOUND WORDS',
+    loadingDictionary: 'Loading Dictionary...',
+    loadingMessage: 'Preparing your game...',
     errors: {
       tooShort: 'Too short!',
       alreadyFound: 'Already found!',
