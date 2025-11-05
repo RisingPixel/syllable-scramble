@@ -59,7 +59,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             <span className="text-muted-foreground/50 hidden sm:inline">•</span>
             
             <span className="whitespace-nowrap">
-              {t('welcome.wordsInRounds', { games: playerProgress.gamesPlayed.toString() }).replace('{games}', playerProgress.totalWordsFound.toString())}
+              {t('welcome.wordsInRounds', { words: playerProgress.totalWordsFound, games: playerProgress.gamesPlayed })}
             </span>
           </div>
         </div>
@@ -101,10 +101,9 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground">{t('welcome.exampleWords')}</p>
               <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-medium">
-                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>BURN</span>
-                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>TURTLE</span>
-                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.8s" }}>PURPLE</span>
-                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.9s" }}>HAMBURGER</span>
+                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>{t('welcome.exampleWord1')}</span>
+                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>{t('welcome.exampleWord2')}</span>
+                <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.8s" }}>{t('welcome.exampleWord3')}</span>
               </div>
             </div>
           </div>
@@ -150,7 +149,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             </span>
             <span className="text-muted-foreground/50">•</span>
             <span className="whitespace-nowrap">
-              {t('welcome.wordsInRounds', { games: playerProgress.gamesPlayed.toString() }).replace('{games}', playerProgress.totalWordsFound.toString())}
+              {t('welcome.wordsInRounds', { words: playerProgress.totalWordsFound, games: playerProgress.gamesPlayed })}
             </span>
           </div>
         </div>
@@ -172,7 +171,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
                   <span className="text-muted-foreground">{t('welcome.example')}: </span>
                   <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded">UR</span>
                   <span className="text-muted-foreground"> → </span>
-                  <span className="font-medium">BURN, TURTLE, PURPLE</span>
+                  <span className="font-medium">{t('welcome.exampleWord1')}, {t('welcome.exampleWord2')}, {t('welcome.exampleWord3')}</span>
                 </div>
               </div>
             </div>

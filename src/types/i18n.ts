@@ -19,6 +19,9 @@ export interface Translations {
     example: string;
     exampleSyllable: string;
     exampleWords: string;
+    exampleWord1: string;
+    exampleWord2: string;
+    exampleWord3: string;
     typeWords: string;
     asFastAsYouCan: string;
   };
