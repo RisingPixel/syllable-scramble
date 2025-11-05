@@ -9,10 +9,8 @@ export interface Translations {
     subtitle: string;
     challengeMode: string;
     level: string;
-    player: string;
-    totalScore: string;
-    wordsFound: string;
-    games: string;
+    xp: string;
+    wordsInRounds: string;
     howToPlay: string;
     findWords: string;
     findWordsDesc: string;
@@ -21,6 +19,8 @@ export interface Translations {
     example: string;
     exampleSyllable: string;
     exampleWords: string;
+    typeWords: string;
+    asFastAsYouCan: string;
   };
   game: {
     findWordsContaining: string;
@@ -36,16 +36,20 @@ export interface Translations {
     };
   };
   results: {
-    gameOver: string;
+    levelUp: string;
+    levelUpDesc: string;
+    xpGained: string;
+    continue: string;
+    syllableUsed: string;
     youFound: string;
+    word: string;
     words: string;
-    totalLetters: string;
-    finalScore: string;
-    achievementBonus: string;
-    tier: string;
+    withLetters: string;
+    withLettersShort: string;
+    totalScore: string;
+    bonus: string;
+    rejectedQuote: string;
     shareResults: string;
     backToMenu: string;
-    rejectedWords: string;
-    longestRejected: string;
   };
 }

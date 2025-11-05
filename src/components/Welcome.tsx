@@ -2,6 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Clock, Target, Trophy, Zap } from "lucide-react";
 import { PlayerProgress } from "@/utils/playerProgress";
 import { LanguageSelector } from "@/components/LanguageSelector";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 interface WelcomeProps {
   onStart: () => void;
@@ -10,6 +11,7 @@ interface WelcomeProps {
 }
 
 const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) => {
+  const { t } = useLanguage();
   const xpPercentage = (playerProgress.experiencePoints / playerProgress.experienceToNextLevel) * 100;
 
   return (
@@ -24,12 +26,12 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
         {/* Header */}
         <div className="text-center animate-fade-in">
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-1.5 sm:mb-2 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-            SYLLABLE
+            {t('welcome.title')}
           </h1>
-          <p className="text-base sm:text-lg text-muted-foreground">A fast-paced word game</p>
+          <p className="text-base sm:text-lg text-muted-foreground">{t('welcome.subtitle')}</p>
           {challengeSyllable && (
             <div className="mt-2 sm:mt-4 inline-block bg-accent/20 text-accent px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg text-sm sm:text-base font-bold animate-fade-in">
-              🎯 Challenge Mode: {challengeSyllable}
+              {t('welcome.challengeMode')}: {challengeSyllable}
             </div>
           )}
         </div>
@@ -45,26 +47,26 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
           <div className="flex items-center gap-2 text-xs sm:text-sm text-muted-foreground flex-wrap">
             <div className="flex items-center gap-1.5">
               <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
-              <span className="font-semibold text-foreground">Level {playerProgress.level}</span>
+              <span className="font-semibold text-foreground">{t('welcome.level')} {playerProgress.level}</span>
             </div>
             
             <span className="text-muted-foreground/50 hidden sm:inline">•</span>
             
             <span className="whitespace-nowrap">
-              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} {t('welcome.xp')}
             </span>
             
             <span className="text-muted-foreground/50 hidden sm:inline">•</span>
             
             <span className="whitespace-nowrap">
-              {playerProgress.totalWordsFound} words in {playerProgress.gamesPlayed} rounds
+              {t('welcome.wordsInRounds', { games: playerProgress.gamesPlayed.toString() }).replace('{games}', playerProgress.totalWordsFound.toString())}
             </span>
           </div>
         </div>
 
         {/* Instructions Card */}
         <div className="bg-card border border-border rounded-xl p-3 sm:p-4 space-y-3 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
-          <h2 className="text-lg sm:text-xl font-bold text-center">How to Play</h2>
+          <h2 className="text-lg sm:text-xl font-bold text-center">{t('welcome.howToPlay')}</h2>
 
           <div className="space-y-2.5 sm:space-y-3">
             {/* Instruction 1 */}
@@ -73,8 +75,8 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             <Target className="w-4 h-4 sm:w-5 sm:h-5 text-accent" />
           </div>
               <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-0.5">Find Words</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">Type words that contain the given syllable</p>
+                <h3 className="font-semibold text-sm sm:text-base mb-0.5">{t('welcome.findWords')}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">{t('welcome.findWordsDesc')}</p>
               </div>
             </div>
 
@@ -84,20 +86,20 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             <Clock className="w-4 h-4 sm:w-5 sm:h-5 text-warning" />
           </div>
               <div>
-                <h3 className="font-semibold text-sm sm:text-base mb-0.5">Beat the Clock</h3>
-                <p className="text-xs sm:text-sm text-muted-foreground">Find as many words as possible</p>
+                <h3 className="font-semibold text-sm sm:text-base mb-0.5">{t('welcome.beatClock')}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground">{t('welcome.beatClockDesc')}</p>
               </div>
             </div>
           </div>
 
           {/* Example */}
           <div className="bg-secondary/50 border border-border rounded-xl p-2.5 sm:p-3 mt-3 hover:bg-secondary/70 transition-all duration-300 animate-fade-in-up-slow" style={{ animationDelay: "0.5s" }}>
-            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1.5 uppercase tracking-wider text-center">Example</p>
+            <p className="text-[10px] sm:text-xs text-muted-foreground mb-1.5 uppercase tracking-wider text-center">{t('welcome.example')}</p>
             <div className="text-center space-y-1.5">
               <p className="text-sm sm:text-base">
-                If the syllable is <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded text-sm sm:text-base">UR</span>
+                {t('welcome.exampleSyllable')} <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded text-sm sm:text-base">UR</span>
               </p>
-              <p className="text-xs sm:text-sm text-muted-foreground">You can type:</p>
+              <p className="text-xs sm:text-sm text-muted-foreground">{t('welcome.exampleWords')}</p>
               <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-medium">
                 <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.6s" }}>BURN</span>
                 <span className="bg-card px-2 py-0.5 sm:py-1 rounded-lg border border-border animate-fade-in-up-slow hover:scale-105 hover:border-accent transition-all cursor-default" style={{ animationDelay: "0.7s" }}>TURTLE</span>
@@ -117,7 +119,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             size="lg"
             className="w-full text-base sm:text-lg md:text-xl py-4 sm:py-5 md:py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all animate-pulse-glow hover:scale-105 shadow-lg shadow-accent/50"
           >
-            🎮 Start Game
+            {t('common.startGame')}
           </Button>
         </div>
       </div>
@@ -127,9 +129,9 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
         {/* Header - Centered Top */}
         <div className="text-center animate-fade-in">
           <h1 className="text-3xl font-bold tracking-tight mb-1 bg-gradient-to-r from-foreground via-accent to-foreground bg-clip-text text-transparent animate-shimmer bg-[length:200%_auto]">
-            SYLLABLE
+            {t('welcome.title')}
           </h1>
-          <p className="text-sm text-muted-foreground">A fast-paced word game</p>
+          <p className="text-sm text-muted-foreground">{t('welcome.subtitle')}</p>
         </div>
 
         {/* Compact Stats Bar */}
@@ -140,15 +142,15 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
           <div className="flex items-center gap-3 text-sm text-muted-foreground">
             <div className="flex items-center gap-1.5">
               <Trophy className="w-3.5 h-3.5 text-accent flex-shrink-0" />
-              <span className="font-semibold text-foreground">Level {playerProgress.level}</span>
+              <span className="font-semibold text-foreground">{t('welcome.level')} {playerProgress.level}</span>
             </div>
             <span className="text-muted-foreground/50">•</span>
             <span className="whitespace-nowrap">
-              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} XP
+              {playerProgress.experiencePoints} / {playerProgress.experienceToNextLevel} {t('welcome.xp')}
             </span>
             <span className="text-muted-foreground/50">•</span>
             <span className="whitespace-nowrap">
-              {playerProgress.totalWordsFound} words in {playerProgress.gamesPlayed} rounds
+              {t('welcome.wordsInRounds', { games: playerProgress.gamesPlayed.toString() }).replace('{games}', playerProgress.totalWordsFound.toString())}
             </span>
           </div>
         </div>
@@ -156,18 +158,18 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
         {/* Instructions Card - Full Width */}
         <div className="w-full">
             <div className="bg-card border border-border rounded-xl p-4 hover:border-accent/50 transition-all duration-300 hover:shadow-lg hover:shadow-accent/10 animate-fade-in-up-slow" style={{ animationDelay: "0.2s" }}>
-              <h2 className="text-base font-bold text-center mb-3">How to Play</h2>
+              <h2 className="text-base font-bold text-center mb-3">{t('welcome.howToPlay')}</h2>
               
               <div className="space-y-3 text-xs">
                 <p className="text-center text-muted-foreground">
                   <Target className="w-3 h-3 inline mr-1 text-accent" />
-                  Type words containing the syllable 
+                  {t('welcome.typeWords')} 
                   <Clock className="w-3 h-3 inline ml-2 mr-1 text-warning" />
-                  as fast as you can!
+                  {t('welcome.asFastAsYouCan')}
                 </p>
                 
                 <div className="bg-secondary/50 rounded-lg p-2 text-center">
-                  <span className="text-muted-foreground">Example: </span>
+                  <span className="text-muted-foreground">{t('welcome.example')}: </span>
                   <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded">UR</span>
                   <span className="text-muted-foreground"> → </span>
                   <span className="font-medium">BURN, TURTLE, PURPLE</span>
@@ -183,7 +185,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             size="lg"
             className="w-full text-lg py-5 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] shadow-lg shadow-accent/50 hover:shadow-xl hover:shadow-accent/60"
           >
-            🎮 Start Game
+            {t('common.startGame')}
           </Button>
         </div>
       </div>

@@ -29,7 +29,7 @@ interface GameProps {
 
 const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdPlaying }: GameProps) => {
   const { toast } = useToast();
-  const { language } = useLanguage();
+  const { language, t } = useLanguage();
   const [syllable] = useState(challengeSyllable || getRandomSyllable(language));
   const [inputValue, setInputValue] = useState("");
   const [foundWords, setFoundWords] = useState<FoundWord[]>([]);
@@ -103,7 +103,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
 
     // Check if word already found
     if (foundWords.some((w) => w.word.toLowerCase() === trimmedInput.toLowerCase())) {
-      setErrorPopup("Already found!");
+      setErrorPopup(t('game.errors.alreadyFound'));
       setInputValue("");
       setTimeout(() => inputRef.current?.focus(), 50);
       return;
@@ -186,9 +186,9 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
 
       // Inline error message mapping
       const errorMessage = 
-        validation.errorType === 'too_short' ? "Too short!" :
-        validation.errorType === 'missing_syllable' ? `Must contain "${syllable.toUpperCase()}"!` :
-        validation.errorType === 'not_in_dictionary' ? "Word not found!" : "Error!";
+        validation.errorType === 'too_short' ? t('game.errors.tooShort') :
+        validation.errorType === 'missing_syllable' ? t('game.errors.missingSyllable', { syllable: syllable.toUpperCase() }) :
+        validation.errorType === 'not_in_dictionary' ? t('game.errors.notInDictionary') : "Error!";
 
       setErrorPopup(errorMessage);
       setInputValue("");
@@ -216,21 +216,21 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
       <div className="w-full max-w-2xl space-y-4 sm:space-y-8 animate-scale-in landscape:hidden">
         {/* Header */}
         <div className="text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">SYLLABLE</h1>
-          <p className="text-sm sm:text-base text-muted-foreground">Find words containing the syllable</p>
+          <h1 className="text-4xl sm:text-5xl font-bold tracking-tight mb-2">{t('welcome.title')}</h1>
+          <p className="text-sm sm:text-base text-muted-foreground">{t('game.findWordsContaining')}</p>
         </div>
 
         {/* Timer and Score */}
         <div className="flex justify-between items-center px-4">
           <div className="text-xl sm:text-2xl font-bold">
-            Score: <span className="text-accent">{totalScore}</span>
+            {t('game.score')}: <span className="text-accent">{totalScore}</span>
           </div>
           <Timer timeLeft={timeLeft} />
         </div>
 
         {/* Syllable Display */}
         <div className="bg-card border border-border rounded-2xl p-6 sm:p-8 text-center">
-          <p className="text-xs sm:text-sm text-muted-foreground mb-2 uppercase tracking-wider">Find words with</p>
+          <p className="text-xs sm:text-sm text-muted-foreground mb-2 uppercase tracking-wider">{t('game.findWordsContaining')}</p>
           <div className="text-4xl sm:text-6xl font-bold tracking-wider bg-secondary px-4 sm:px-6 py-3 sm:py-4 rounded-xl inline-block">
             {syllable}
           </div>
@@ -243,7 +243,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="Type a word..."
+            placeholder={t('game.typeWord')}
             className="text-xl sm:text-2xl py-4 sm:py-6 px-4 sm:px-6 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide"
             autoComplete="off"
             autoCapitalize="off"
@@ -254,7 +254,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
             size="lg"
             className="w-full text-lg sm:text-xl py-5 sm:py-6 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
           >
-            Submit
+            {t('common.submit')}
           </Button>
         </form>
 
@@ -268,13 +268,13 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
         <div className="grid grid-cols-3 items-center px-2">
           {/* Score a sinistra */}
           <div className="text-base font-bold">
-            Score: <span className="text-accent">{totalScore}</span>
+            {t('game.score')}: <span className="text-accent">{totalScore}</span>
           </div>
           
           {/* SYLLABLE al centro */}
           <div className="text-center">
-            <h1 className="text-2xl font-bold tracking-tight">SYLLABLE</h1>
-            <p className="text-[10px] text-muted-foreground">Find words with the syllable</p>
+            <h1 className="text-2xl font-bold tracking-tight">{t('welcome.title')}</h1>
+            <p className="text-[10px] text-muted-foreground">{t('game.findWordsContaining')}</p>
           </div>
           
           {/* Timer a destra */}
@@ -287,7 +287,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
         <div className="grid grid-cols-2 gap-2 overflow-hidden h-[60vh]">
           {/* Card TARGET - sinistra */}
           <div className="bg-card border border-border rounded-lg p-3 flex flex-col items-center justify-center h-full">
-            <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">TARGET</p>
+            <p className="text-[10px] text-muted-foreground mb-1 uppercase tracking-wider">{t('game.target')}</p>
             <div className="text-3xl font-bold tracking-wider bg-secondary px-4 py-2 rounded-lg">
               {syllable}
             </div>
@@ -296,8 +296,8 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
           {/* Card FOUND WORDS - destra */}
           <div className="bg-card border border-border rounded-lg p-3 flex flex-col h-full">
             <div className="flex justify-between items-center mb-1">
-              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">FOUND WORDS</p>
-              <p className="text-[10px] text-muted-foreground">{foundWords.length} words</p>
+              <p className="text-[10px] text-muted-foreground uppercase tracking-wider">{t('game.foundWords')}</p>
+              <p className="text-[10px] text-muted-foreground">{foundWords.length} {foundWords.length === 1 ? t('results.word') : t('results.words')}</p>
             </div>
             <div className="flex-1 overflow-y-auto">
               <WordList words={foundWords} syllable={syllable} isLandscape hideHeader />
@@ -312,7 +312,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
             type="text"
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
-            placeholder="TYPE A WORD..."
+            placeholder={t('game.typeWord').toUpperCase()}
             className="text-base py-2 px-3 bg-card border-2 border-border focus:border-accent uppercase text-center tracking-wide w-full"
             autoComplete="off"
             autoCapitalize="off"
@@ -323,7 +323,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
             size="lg"
             className="w-full text-sm py-2 bg-accent hover:bg-accent/90 text-accent-foreground font-bold uppercase tracking-wider transition-all"
           >
-            Submit
+            {t('common.submit')}
           </Button>
         </form>
       </div>

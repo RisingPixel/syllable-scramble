@@ -5,7 +5,7 @@ export type Language = 'en' | 'fr' | 'it' | 'de' | 'es';
 interface LanguageContextType {
   language: Language;
   setLanguage: (lang: Language) => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string | number>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -43,7 +43,7 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
     });
   }, [language]);
 
-  const t = (key: string): string => {
+  const t = (key: string, params?: Record<string, string | number>): string => {
     const keys = key.split('.');
     let value: any = translations;
     
@@ -51,7 +51,16 @@ export const LanguageProvider = ({ children }: { children: ReactNode }) => {
       value = value?.[k];
     }
     
-    return value || key;
+    let result = value || key;
+    
+    // Simple interpolation: replace {param} with values
+    if (params) {
+      Object.entries(params).forEach(([k, v]) => {
+        result = result.replace(new RegExp(`\\{${k}\\}`, 'g'), String(v));
+      });
+    }
+    
+    return result;
   };
 
   return (
