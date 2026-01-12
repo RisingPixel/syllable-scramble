@@ -50,6 +50,11 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
   const startTimeRef = useRef<number>(Date.now());
+  
+  // Refs per evitare stale closures nel timer
+  const foundWordsRef = useRef<FoundWord[]>([]);
+  const rejectedWordsRef = useRef<string[]>([]);
+  const comboStateRef = useRef<ComboState>(comboState);
 
   // Assicurati che il dizionario sia caricato all'avvio del gioco
   useEffect(() => {
@@ -67,6 +72,19 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     
     return unsubscribe;
   }, [language]);
+
+  // Sincronizza i ref con lo stato per evitare stale closures
+  useEffect(() => {
+    foundWordsRef.current = foundWords;
+  }, [foundWords]);
+
+  useEffect(() => {
+    rejectedWordsRef.current = rejectedWords;
+  }, [rejectedWords]);
+
+  useEffect(() => {
+    comboStateRef.current = comboState;
+  }, [comboState]);
 
   useEffect(() => {
     // Solo se il dizionario è pronto, avvia il gioco
@@ -101,24 +119,28 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   const handleTimeUp = () => {
     gameplayStop();
     
-    const totalLetters = foundWords.reduce((sum, w) => sum + w.word.length, 0);
+    // Usa i ref invece dello stato per avere i valori correnti (evita stale closures)
+    const currentWords = foundWordsRef.current;
+    const currentRejected = rejectedWordsRef.current;
+    
+    const totalLetters = currentWords.reduce((sum, w) => sum + w.word.length, 0);
     const allAchievements = Array.from(unlockedAchievements)
       .map((id) =>
         checkAchievements(
           {
-            foundWords,
-            rejectedWords,
-            timeLeft,
+            foundWords: currentWords,
+            rejectedWords: currentRejected,
+            timeLeft: 0,
             syllable,
-            totalScore: foundWords.reduce((sum, w) => sum + w.score, 0),
-            comboCount: comboState.count,
+            totalScore: currentWords.reduce((sum, w) => sum + w.score, 0),
+            comboCount: comboStateRef.current.count,
           },
           new Set(),
         ).find((a) => a.id === id),
       )
       .filter((a): a is Achievement => a !== undefined);
 
-    onGameEnd(foundWords, totalLetters, rejectedWords, syllable, allAchievements);
+    onGameEnd(currentWords, totalLetters, currentRejected, syllable, allAchievements);
   };
 
   const handleSubmit = async (e: FormEvent) => {
