@@ -5,6 +5,7 @@ const de: Translations = {
     submit: 'Senden',
     back: 'Zurück',
     startGame: '🎮 Spiel Starten',
+    retry: 'Wiederholen',
   },
   welcome: {
     title: 'SILBE',
@@ -35,6 +36,8 @@ const de: Translations = {
     foundWords: 'GEFUNDENE WÖRTER',
     loadingDictionary: 'Wörterbuch wird geladen...',
     loadingMessage: 'Ihr Spiel wird vorbereitet...',
+    dictionaryError: 'Wörterbuch Fehler',
+    dictionaryErrorMessage: 'Wörterbuch konnte nicht geladen werden. Überprüfen Sie Ihre Verbindung.',
     errors: {
       tooShort: 'Zu kurz!',
       alreadyFound: 'Bereits gefunden!',

@@ -5,6 +5,7 @@ const en: Translations = {
     submit: 'Submit',
     back: 'Back',
     startGame: '🎮 Start Game',
+    retry: 'Retry',
   },
   welcome: {
     title: 'SYLLABLE',
@@ -35,6 +36,8 @@ const en: Translations = {
     foundWords: 'FOUND WORDS',
     loadingDictionary: 'Loading Dictionary...',
     loadingMessage: 'Preparing your game...',
+    dictionaryError: 'Dictionary Error',
+    dictionaryErrorMessage: 'Unable to load the dictionary. Please check your connection.',
     errors: {
       tooShort: 'Too short!',
       alreadyFound: 'Already found!',

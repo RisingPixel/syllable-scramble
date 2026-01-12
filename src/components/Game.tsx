@@ -34,6 +34,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   
   // Dictionary loading state
   const [isDictReady, setIsDictReady] = useState(isDictionaryLoaded(language));
+  const [dictError, setDictError] = useState(false);
   
   const [syllable] = useState(challengeSyllable || getRandomSyllable(language));
   const [inputValue, setInputValue] = useState("");
@@ -49,11 +50,12 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   const [errorPopup, setErrorPopup] = useState<string | null>(null);
   const [unlockedAchievements, setUnlockedAchievements] = useState<Set<string>>(new Set());
   const inputRef = useRef<HTMLInputElement>(null);
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number>(performance.now());
   
   // Refs per evitare stale closures nel timer
   const foundWordsRef = useRef<FoundWord[]>([]);
   const rejectedWordsRef = useRef<string[]>([]);
+  const unlockedAchievementsRef = useRef<Set<string>>(new Set());
   const comboStateRef = useRef<ComboState>(comboState);
 
   // Assicurati che il dizionario sia caricato all'avvio del gioco
@@ -65,8 +67,9 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     
     // Listen for loading state changes
     const unsubscribe = onLoadingStateChange((lang, state) => {
-      if (lang === language && state === 'loaded') {
-        setIsDictReady(true);
+      if (lang === language) {
+        if (state === 'loaded') setIsDictReady(true);
+        if (state === 'error') setDictError(true);
       }
     });
     
@@ -87,6 +90,10 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   }, [comboState]);
 
   useEffect(() => {
+    unlockedAchievementsRef.current = unlockedAchievements;
+  }, [unlockedAchievements]);
+
+  useEffect(() => {
     // Solo se il dizionario è pronto, avvia il gioco
     if (isDictReady) {
       gameplayStart();
@@ -103,7 +110,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     if (!isDictReady) return;
     
     const interval = setInterval(() => {
-      const elapsed = Math.floor((Date.now() - startTimeRef.current) / 1000);
+      const elapsed = Math.floor((performance.now() - startTimeRef.current) / 1000);
       const remaining = Math.max(0, 60 - elapsed);
       setTimeLeft(remaining);
 
@@ -124,7 +131,7 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
     const currentRejected = rejectedWordsRef.current;
     
     const totalLetters = currentWords.reduce((sum, w) => sum + w.word.length, 0);
-    const allAchievements = Array.from(unlockedAchievements)
+    const allAchievements = Array.from(unlockedAchievementsRef.current)
       .map((id) =>
         checkAchievements(
           {
@@ -247,6 +254,25 @@ const Game = ({ onGameEnd, challengeSyllable, gameplayStart, gameplayStop, isAdP
   };
 
   const totalScore = foundWords.reduce((sum, w) => sum + w.score, 0);
+
+  // Error Screen se dizionario fallito
+  if (dictError) {
+    return (
+      <div className="min-h-screen flex flex-col items-center justify-center p-4 bg-background">
+        <div className="text-center space-y-4">
+          <div className="text-6xl">😔</div>
+          <h2 className="text-2xl font-bold text-destructive">{t('game.dictionaryError')}</h2>
+          <p className="text-muted-foreground">{t('game.dictionaryErrorMessage')}</p>
+          <Button 
+            onClick={() => window.location.reload()} 
+            className="bg-accent hover:bg-accent/90 text-accent-foreground"
+          >
+            {t('common.retry')}
+          </Button>
+        </div>
+      </div>
+    );
+  }
 
   // Loading Screen se dizionario non pronto
   if (!isDictReady) {
