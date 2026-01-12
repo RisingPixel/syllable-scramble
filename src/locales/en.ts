@@ -21,6 +21,7 @@ const en: Translations = {
     beatClockDesc: 'Find as many words as possible',
     example: 'Example',
     exampleSyllable: 'If the syllable is',
+    exampleSyllableText: 'UR',
     exampleWords: 'You can type:',
     exampleWord1: 'BURN',
     exampleWord2: 'TURTLE',
