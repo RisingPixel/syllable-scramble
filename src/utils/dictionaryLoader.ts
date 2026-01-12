@@ -43,13 +43,21 @@ export const loadDictionary = async (language: Language): Promise<Set<string>> =
     return dictionaryCache[language]!;
   }
 
-  // Se già in loading, attendi
+  // Se già in loading, attendi con timeout
   if (loadingStates[language] === 'loading') {
     return new Promise((resolve) => {
+      let attempts = 0;
+      const maxAttempts = 100; // 10 secondi max (100 * 100ms)
       const checkInterval = setInterval(() => {
+        attempts++;
         if (dictionaryCache[language]) {
           clearInterval(checkInterval);
           resolve(dictionaryCache[language]!);
+        } else if (attempts >= maxAttempts) {
+          clearInterval(checkInterval);
+          console.error(`⏱️ Dictionary loading timeout for ${language}`);
+          notifyListeners(language, 'error');
+          resolve(new Set()); // Fallback vuoto
         }
       }, 100);
     });

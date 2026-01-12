@@ -5,6 +5,7 @@ const it: Translations = {
     submit: 'Invia',
     back: 'Indietro',
     startGame: '🎮 Inizia Partita',
+    retry: 'Riprova',
   },
   welcome: {
     title: 'SILLABA',
@@ -35,6 +36,8 @@ const it: Translations = {
     foundWords: 'PAROLE TROVATE',
     loadingDictionary: 'Caricamento dizionario...',
     loadingMessage: 'Preparazione del gioco...',
+    dictionaryError: 'Errore Dizionario',
+    dictionaryErrorMessage: 'Impossibile caricare il dizionario. Controlla la tua connessione.',
     errors: {
       tooShort: 'Troppo corta!',
       alreadyFound: 'Già trovata!',

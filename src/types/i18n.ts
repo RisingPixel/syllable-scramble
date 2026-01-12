@@ -3,6 +3,7 @@ export interface Translations {
     submit: string;
     back: string;
     startGame: string;
+    retry: string;
   };
   welcome: {
     title: string;
@@ -33,6 +34,8 @@ export interface Translations {
     foundWords: string;
     loadingDictionary: string;
     loadingMessage: string;
+    dictionaryError: string;
+    dictionaryErrorMessage: string;
     errors: {
       tooShort: string;
       alreadyFound: string;

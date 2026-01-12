@@ -5,6 +5,7 @@ const es: Translations = {
     submit: 'Enviar',
     back: 'Volver',
     startGame: '🎮 Iniciar Juego',
+    retry: 'Reintentar',
   },
   welcome: {
     title: 'SÍLABA',
@@ -35,6 +36,8 @@ const es: Translations = {
     foundWords: 'PALABRAS ENCONTRADAS',
     loadingDictionary: 'Cargando diccionario...',
     loadingMessage: 'Preparando tu juego...',
+    dictionaryError: 'Error de Diccionario',
+    dictionaryErrorMessage: 'No se pudo cargar el diccionario. Verifica tu conexión.',
     errors: {
       tooShort: '¡Muy corta!',
       alreadyFound: '¡Ya encontrada!',

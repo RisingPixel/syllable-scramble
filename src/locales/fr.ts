@@ -5,6 +5,7 @@ const fr: Translations = {
     submit: 'Envoyer',
     back: 'Retour',
     startGame: '🎮 Démarrer',
+    retry: 'Réessayer',
   },
   welcome: {
     title: 'SYLLABE',
@@ -35,6 +36,8 @@ const fr: Translations = {
     foundWords: 'MOTS TROUVÉS',
     loadingDictionary: 'Chargement du dictionnaire...',
     loadingMessage: 'Préparation de votre jeu...',
+    dictionaryError: 'Erreur Dictionnaire',
+    dictionaryErrorMessage: 'Impossible de charger le dictionnaire. Vérifiez votre connexion.',
     errors: {
       tooShort: 'Trop court!',
       alreadyFound: 'Déjà trouvé!',
