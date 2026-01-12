@@ -8,7 +8,7 @@ const it: Translations = {
     retry: 'Riprova',
   },
   welcome: {
-    title: 'SILLABA',
+    title: 'SYLLABLE',
     subtitle: 'Un gioco di parole veloce',
     challengeMode: '🎯 Modalità Sfida',
     level: 'Livello',
