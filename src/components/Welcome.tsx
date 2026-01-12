@@ -97,7 +97,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
             <p className="text-[10px] sm:text-xs text-muted-foreground mb-1.5 uppercase tracking-wider text-center">{t('welcome.example')}</p>
             <div className="text-center space-y-1.5">
               <p className="text-sm sm:text-base">
-                {t('welcome.exampleSyllable')} <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded text-sm sm:text-base">UR</span>
+                {t('welcome.exampleSyllable')} <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded text-sm sm:text-base">{t('welcome.exampleSyllableText')}</span>
               </p>
               <p className="text-xs sm:text-sm text-muted-foreground">{t('welcome.exampleWords')}</p>
               <div className="flex flex-wrap justify-center gap-1 sm:gap-1.5 text-xs sm:text-sm font-medium">
@@ -169,7 +169,7 @@ const Welcome = ({ onStart, challengeSyllable, playerProgress }: WelcomeProps) =
                 
                 <div className="bg-secondary/50 rounded-lg p-2 text-center">
                   <span className="text-muted-foreground">{t('welcome.example')}: </span>
-                  <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded">UR</span>
+                  <span className="font-bold bg-accent/30 px-1.5 py-0.5 rounded">{t('welcome.exampleSyllableText')}</span>
                   <span className="text-muted-foreground"> → </span>
                   <span className="font-medium">{t('welcome.exampleWord1')}, {t('welcome.exampleWord2')}, {t('welcome.exampleWord3')}</span>
                 </div>

@@ -8,7 +8,7 @@ const es: Translations = {
     retry: 'Reintentar',
   },
   welcome: {
-    title: 'SÍLABA',
+    title: 'SYLLABLE',
     subtitle: 'Un juego de palabras rápido',
     challengeMode: '🎯 Modo Desafío',
     level: 'Nivel',
@@ -21,6 +21,7 @@ const es: Translations = {
     beatClockDesc: 'Encuentra tantas palabras como sea posible',
     example: 'Ejemplo',
     exampleSyllable: 'Si la sílaba es',
+    exampleSyllableText: 'AR',
     exampleWords: 'Puedes escribir:',
     exampleWord1: 'PARAR',
     exampleWord2: 'HABLAR',

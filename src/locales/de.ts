@@ -8,7 +8,7 @@ const de: Translations = {
     retry: 'Wiederholen',
   },
   welcome: {
-    title: 'SILBE',
+    title: 'SYLLABLE',
     subtitle: 'Ein schnelles Wortspiel',
     challengeMode: '🎯 Herausforderung',
     level: 'Level',
@@ -21,6 +21,7 @@ const de: Translations = {
     beatClockDesc: 'Finden Sie so viele Wörter wie möglich',
     example: 'Beispiel',
     exampleSyllable: 'Wenn die Silbe ist',
+    exampleSyllableText: 'EN',
     exampleWords: 'Sie können eingeben:',
     exampleWord1: 'LESEN',
     exampleWord2: 'GEHEN',

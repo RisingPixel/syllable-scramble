@@ -21,6 +21,7 @@ const it: Translations = {
     beatClockDesc: 'Trova quante più parole possibile',
     example: 'Esempio',
     exampleSyllable: 'Se la sillaba è',
+    exampleSyllableText: 'TO',
     exampleWords: 'Puoi scrivere:',
     exampleWord1: 'GATTO',
     exampleWord2: 'LETTO',

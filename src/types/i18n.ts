@@ -19,6 +19,7 @@ export interface Translations {
     beatClockDesc: string;
     example: string;
     exampleSyllable: string;
+    exampleSyllableText: string;
     exampleWords: string;
     exampleWord1: string;
     exampleWord2: string;

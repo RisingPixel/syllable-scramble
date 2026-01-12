@@ -8,7 +8,7 @@ const fr: Translations = {
     retry: 'Réessayer',
   },
   welcome: {
-    title: 'SYLLABE',
+    title: 'SYLLABLE',
     subtitle: 'Un jeu de mots rapide',
     challengeMode: '🎯 Mode Défi',
     level: 'Niveau',
@@ -21,6 +21,7 @@ const fr: Translations = {
     beatClockDesc: 'Trouvez autant de mots que possible',
     example: 'Exemple',
     exampleSyllable: 'Si la syllabe est',
+    exampleSyllableText: 'ON',
     exampleWords: 'Vous pouvez taper:',
     exampleWord1: 'MAISON',
     exampleWord2: 'LION',
