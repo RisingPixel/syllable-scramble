@@ -1,5 +1,4 @@
 import { showForm } from '@devvit/web/client';
-import { FormEffectResponse } from '@devvit/web/client';
 import { Button } from "./ui/button";
 import { Star, Share2, Home, Sparkles } from "lucide-react";
 import { useToast } from "../hooks/use-toast";
@@ -71,48 +70,42 @@ const Results = ({ words, totalLetters, rejectedWords, syllable, onBackToMenu, a
       `Can you beat this score? 👀`;
 
     const formResult = await showForm({
-      form: {
-        title: 'Share your result',
-        description:
-          `A comment will be added to this post from your account:\n\n` +
-          `${commentText}`,
-        fields: [
-          {
-            type: 'paragraph',
-            name: 'description',
-            label: 'Share your comments',
-            placeholder: 'Do you want to add something else?'
-          }
-        ],
-        acceptLabel: 'Post comment'
-      }, data: { description: ''}
+      title: 'Share your result',
+      description:
+        `A comment will be added to this post from your account:\n\n` +
+        `${commentText}`,
+      fields: [
+        {
+          type: 'string',
+          name: 'description',
+          label: 'Share your comments',
+          defaultValue: '',
+        }
+      ],
+      acceptLabel: 'Post comment'
     });
 
-    console.log(formResult.action);
+    if (!formResult || formResult.action !== 'submit') {
+      return;
+    }
 
-    if (formResult) {
-      const { description } = formResult;
-      console.log("Description: " + description);
-      /*const additionalText = formResult.description.trim();
-
-
-      const finalComment =
-        commentText +
-        (additionalText ? `\n\n---\n${additionalText}` : '');
-
-
-      console.log(`Description: ${formResult.description} --- \n\n Final comment: ${finalComment}`)*/
+    const additionalText =
+      typeof formResult.values?.description === 'string'
+        ? formResult.values.description.trim()
+        : '';
+    const finalComment =
+      commentText +
+      (additionalText ? `\n\n---\n${additionalText}` : '');
 
       const res = await fetch('/api/share', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ text: commentText }),
+        body: JSON.stringify({ text: finalComment }),
       });
       
       if (!res.ok) {
         throw new Error('Failed to share');
       }
-    }
   };
 
 
